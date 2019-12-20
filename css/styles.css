@@ -190,7 +190,6 @@ hr {
   min-height: 1px;
   float: left;
   width: 65%;
-  padding-top: 15px;
 }
 
 .pub-img {
@@ -198,7 +197,7 @@ hr {
 }
 
 .journal-conference-reviewer {
-  line-height: 0.7;
+  line-height: normal;
 }
 
 footer {
