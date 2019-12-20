@@ -190,10 +190,12 @@ hr {
   min-height: 1px;
   float: left;
   width: 65%;
+  padding-top: 0px;
 }
 
 .pub-img {
   width:100%;
+  height: 150px;
 }
 
 .journal-conference-reviewer {
