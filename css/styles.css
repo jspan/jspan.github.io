@@ -1,6 +1,6 @@
 body {
-  background-color: #fff;
-  padding:50px;
+  background-color: #eee;
+  /* padding:50px; */
   font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   color: #616161;
   font-weight:400;
@@ -36,11 +36,6 @@ a small {
 
 a:hover small {
   color:#777;
-}
-
-.wrapper {
-  width:860px;
-  margin:0 auto;
 }
 
 table {
@@ -127,6 +122,22 @@ hr {
 }
 .col-9 {
   width: 90%;
+}
+
+.wrapper {
+  width:940px;
+  margin:0 auto;
+}
+
+.container {
+  background-color: #fff;
+  display: block;
+  position: relative;
+  min-height: 1px;
+  float: left;
+  width: 100%;
+  float: left;
+  padding: 40px;
 }
 
 .module {
