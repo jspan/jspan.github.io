@@ -87,7 +87,7 @@
     <br>
     <p style="text-align:center">
         <font color="#000000" size="3">
-            <a href="https://sites.google.com/site/jspanhomepage/">Jinshan Pan</a>&nbsp;&nbsp;&nbsp;&nbsp;Yang Liu&nbsp;&nbsp;&nbsp;&nbsp;Jiangxin Dong&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="https://jspan.github.io/">Jinshan Pan</a>&nbsp;&nbsp;&nbsp;&nbsp;Jiangxin Dong&nbsp;&nbsp;&nbsp;&nbsp;Yang Liu&nbsp;&nbsp;&nbsp;&nbsp;
             Jiawei Zhang&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.jimmyren.com/">Jimmy Ren</a>&nbsp;&nbsp;&nbsp;&nbsp;Jinhui Tang&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="https://scholar.google.com/citations?user=nFhLmFkAAAAJ&hl=en">Yu-Wing Tai</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://faculty.ucmerced.edu/mhyang/">Ming-Hsuan Yang</a>
         </font>
@@ -105,7 +105,7 @@
         that the estimated results should be consistent with the observed inputs under the physics models, we propose a physics model
         constrained learning algorithm so that it can guide the estimation of the specific task in the conventional GAN framework. The
         proposed algorithm is trained in an end-to-end fashion and can be applied to a variety of image restoration and related low-level
-        vision problems. Extensive experiments demonstrate that our method performs favorably against the state-of-the-art algorithms.
+        vision problems. Extensive experiments demonstrate that our method performs favorably against state-of-the-art algorithms.
     </p>
 
     <br>
@@ -282,7 +282,7 @@
             <tr>
 
                 <td style="text-align:center">
-                    <a href="physicsgan/flow_chart.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="physicsgan/flow_chart.png" width="1300"></a>
+                    <a href="physicsgan/flow_chart.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="physicsgan/flow_chart.jpg" width="1300"></a>
                 </td>
             </tr>
 
@@ -305,8 +305,6 @@
 
     <br>
     <p><strong><font size="4">Visual Comparisons</font></strong></p>
-    <img alt="" height="45" src="physicsgan/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
-    <a href="physicsgan/tpami18_physical_model_supp_v1.pdf">More applications and experimental results can be find in the supplemental material</a>&nbsp; &nbsp; &nbsp;
     <p class="style1">&nbsp;</p>
     <p class="style1"><strong>Image Deblurring</strong></p>
     <table align="center">
@@ -341,7 +339,7 @@
                     <a href="physicsgan/0000091_blur_bmvc.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_bmvc.png"></a>
                 </td>
                 <td>
-                    <a href="physicsgan/0000091_blur_cycleGAN.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_cycleGAN.png"></a>
+                    <a href="physicsgan/0000091_blur_cycleGAN.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_pcyclegan.png"></a>
                 </td>
                 <td>
                     <a href="physicsgan/0000091_blur_out.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_out.png"></a>
@@ -350,7 +348,7 @@
             <tr>
                 <td class="style1" style="height: 22px">Nah et al. </td>
                 <td class="style1" style="height: 22px;">Hradiš et al.</td>
-                <td class="style1" style="height: 22px">CycleGAN</td>
+                <td class="style1" style="height: 22px">PCycleGAN</td>
                 <td class="style1" style="height: 22px">Ours</td>
             </tr>
             <tr>
@@ -429,7 +427,7 @@
                     <a href="physicsgan/57_deblurgan.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_deblurgan.png"></a>
                 </td>
                 <td>
-                    <a href="physicsgan/57_input.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_input.png"></a>
+                    <a href="physicsgan/57_A_pcyclegan.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_A_pcyclegan.png"></a>
                 </td>
                 <td>
                     <a href="physicsgan/57_our.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_our.png"></a>
@@ -438,7 +436,7 @@
             <tr>
                 <td class="style1" style="height: 22px">Zhang et al.</td>
                 <td class="style1" style="height: 22px;">DeblurGAN</td>
-                <td class="style1" style="height: 22px">CycleGAN</td>
+                <td class="style1" style="height: 22px">PCycleGAN</td>
                 <td class="style1" style="height: 22px">Ours </td>
             </tr>
         </tbody>
@@ -549,50 +547,7 @@
     <br>
     <br>
 
-    <p style="text-align:center"><strong><span><font size="4">Edge-preserving Filter Approximation</font></span></strong></p>
 
-    <table align="center">
-        <tbody>
-            <tr>
-                <td>
-                    <a href="physicsgan/2_real_A.png"><img width="400" src="physicsgan/2_real_A.png"></a>
-                </td>
-                <td>
-                    <a href="physicsgan/2_xu.png"><img width="400" src="physicsgan/2_xu.png"></a>
-                </td>
-                <td>
-                    <a href="physicsgan/2_fake_B.png"><img width="400" src="physicsgan/2_fake_B.png"></a>
-                </td>
-                <td>
-                    <a href="physicsgan/2_gt.png"><img width="400" src="physicsgan/2_gt.png"></a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="physicsgan/4_real_A.png"><img alt="" width="400" src="physicsgan/4_real_A.png"></a>
-                </td>
-                <td>
-                    <a href="physicsgan/4_xu.png"><img alt="" width="400" src="physicsgan/4_xu.png"></a>
-                </td>
-                <td>
-                    <a href="physicsgan/4_fake_B.png"><img alt="" width="400" src="physicsgan/4_fake_B.png"></a>
-                </td>
-                <td>
-                    <a href="physicsgan/4_gt.png"><img alt="" width="400" src="physicsgan/4_gt.png"></a>
-                </td>
-            </tr>
-            <tr>
-            <tr>
-                <td class="style1" style="height: 22px">Input image</td>
-                <td class="style1" style="height: 22px">Xu et al.</td>
-                <td class="style1" style="height: 22px;">Ours</td>
-                <td class="style1" style="height: 22px">L0 smoothing filter</td>
-            </tr>
-        </tbody>
-    </table>
-    <p style="text-align:center"><span><font size="4">L0 smoothing filter approximation</font></span></p>
-
-    <br>
     <br>
     <hr>
 
@@ -601,15 +556,15 @@
     <table align="center">
         <tbody align="center">
             Jinshan Pan, Yang Liu, Jiangxin Dong, Jiawei Zhang, Jimmy Ren, Jinhui Tang, Yu-Wing Tai and Ming-Hsuan Yang, "Physics-Based Generative Adversarial Models
-            for Image Restoration and Beyond", submitted to IEEE Transactions on Pattern Analysis and Machine Intelligence (<b><i>IEEE TPAMI</i></b>), 2018.
+            for Image Restoration and Beyond", IEEE Transactions on Pattern Analysis and Machine Intelligence (<b><i>IEEE TPAMI</i></b>), 2020.
             <br>
             <br>
             <img alt="" height="45" src="physicsgan/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
-            <a href="">Paper coming soon...</a>&nbsp; &nbsp; &nbsp; &nbsp;
+            <a href="physicsgan/tpami20_physicsgan.pdf">Paper</a>&nbsp; &nbsp; &nbsp; &nbsp;
             <br>
             <br>
             <img alt="" height="45" src="physicsgan/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
-            <a href="">Supplemental material</a>&nbsp; &nbsp; &nbsp; &nbsp;
+            <a href="physicsgan/tpami20_physicsgan_supp.pdf">Supplemental material</a>&nbsp; &nbsp; &nbsp; &nbsp;
             <br>
             <br>
             <img alt="" height="45" src="physicsgan/code.png" width="45">
