@@ -1,0 +1,484 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Blind Image Deblurring Using Dark Channel Prior</title>
+    <style type="text/css">
+        body {
+            font: 100% Verdana, Arial, sans-serif;
+        }
+
+        a, a:link, a:visited {
+            color: #1f82a9;
+            background: transparent text-decoration: underline;
+            cursor: pointer;
+            background-color: underline;
+        }
+
+        .style1 {
+            text-align: center;
+        }
+
+        .style2 {
+            text-align: left;
+        }
+
+        .style3 {
+            font-size: large;
+            color: #0000FF;
+        }
+
+        .style5 {
+            text-align: left;
+            font-size: large;
+            color: #0000FF;
+        }
+
+        .style7 {
+            text-align: center;
+            font-size: large;
+        }
+
+        .style8 {
+            text-align: center;
+            font-size: large;
+            color: #FF0000;
+        }
+
+        .style9 {
+            color: #FF0000;
+        }
+
+        .style10 {
+            font-size: large;
+        }
+
+        .style12 {
+            font-size: x-large;
+            text-align: center;
+            background-color: #C0C0C0;
+        }
+
+        .style13 {
+            font-size: 16pt;
+            color: #0000FF;
+        }
+
+        .auto-style1 {
+            text-align: center;
+            font-size: medium;
+        }
+
+        .auto-style2 {
+            font-family: Verdana;
+        }
+
+        .auto-style3 {
+            color: #1F82A9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align:center">
+        Blind Image Deblurring Using Dark Channel Prior
+    </h1>
+
+    <p style="text-align:center">
+        <font color="#000000" size="3">
+            <a href="https://jspan.github.io/">Jinshan Pan</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://people.seas.harvard.edu/~dqsun/">Deqing Sun</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://vcg.seas.harvard.edu/people/hanspeter-pfister">
+            Hanspeter Pfister</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://faculty.ucmerced.edu/mhyang/">Ming-Hsuan Yang</a>
+        </font>
+    </p>
+
+    <br>
+    <table align="center">
+        <tr>
+            <td>
+                <a href="dark-channel-deblur/las_vegas_clear_saturated_2_blur_noise.bmp"><img src="dark-channel-deblur/las_vegas_clear_saturated_2_blur_noise.bmp" width="400"></a>
+            </td>
+            <td class="style1" style="width: 378px">
+                <a href="dark-channel-deblur/las_vegas_clear_saturated_2_blur_noise_our.bmp"><img src="dark-channel-deblur/las_vegas_clear_saturated_2_blur_noise_our.bmp" width="400"></a>
+            </td>
+            <td class="style1" valign="bottom">
+                <a href="dark-channel-deblur/las_vegas_clear_saturated_2_blur_noise_dark_blur.bmp"><img src="dark-channel-deblur/las_vegas_clear_saturated_2_blur_noise_dark_blur.bmp" width="400"></a>
+            </td>
+            <td class="style1" valign="bottom">
+                <a href="dark-channel-deblur/las_vegas_clear_saturated_2_blur_noise_dark_clear.bmp"><img src="dark-channel-deblur/las_vegas_clear_saturated_2_blur_noise_dark_clear.bmp" width="400"></a>
+            </td>
+        </tr>
+        <tr>
+            <td class="style1">Real captured image</td>
+            <td class="style1" >Deblurrred result</td>
+            <td class="style1">Dark channel of the input image</td>
+            <td class="style1">Dark channel of the output image </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <p><strong><span><font size="4">Abstract</font></span></strong></p>
+
+    <p>
+        We present a simple and effective blind image deblurring method based on the dark channel prior. Our work is inspired by the interesting observation that the dark channel of blurred images is less sparse. 
+        While most image patches in the clean image contain some dark pixels, these pixels are not dark when averaged with neighboring high-intensity pixels during the blur process. This change in the 
+        sparsity of the dark channel is an inherent property of the blur process, which we both prove mathematically and validate using training data. Therefore, enforcing the sparsity 
+        of the dark channel helps blind deblurring on various scenarios, including natural, face, text, and low-illumination images. However, sparsity of the dark channel introduces a non-convex non-linear optimization problem. We introduce 
+        a linear approximation of the min operator to compute the dark channel. Our look-up-table-based method converges fast in practice and can be directly extended to non-uniform deblurring. Extensive experiments show that 
+        our method achieves state-of-the-art results on deblurring natural images and compares favorably methods that are well-engineered for specific scenarios.
+    </p>
+    <br>
+
+    <hr>
+    <p><strong><font size="4">Technical Papers and Codes</font></strong></p>
+    <table align="center">
+        <tbody align="center">
+            Jinshan Pan, Deqing Sun, Hanspeter Pfister, and Ming-Hsuan Yang, "Blind Image Deblurring Using Dark Channel Prior", IEEE International Conference on Computer Vision (<b><i>CVPR</i></b>), 2016 (<b><i>Oral presentation</i></b>)
+            <br>
+            <br>
+            <img alt="" height="45" src="dark-channel-deblur/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="dark-channel-deblur/cvpr16-dark-channel-deblur.pdf">Paper</a>&nbsp; &nbsp; &nbsp;&nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="dark-channel-deblur/note_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="dark-channel-deblur/cvpr16-dark-channel-deblur-supp.pdf">Supplemental material</a>&nbsp;&nbsp;&nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="dark-channel-deblur/matlab.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="https://pan.baidu.com/s/1DdHdq8-vOHYBlPc7JLN1fw">MATLAB code</a>&nbsp;&nbsp;&nbsp;
+            <br>
+            <br>
+
+            </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <p><strong><font size="4">Bibtex</font></strong></p>
+    <p><font size="4">
+    <pre>
+        @InProceedings{Pan_2016_CVPR,
+        Title                    = {Blind Image Deblurring Using Dark Channel Prior},
+        Author                   = {Pan, Jinshan and Sun, Deqing and Pfister, Hanspeter and Yang, Ming-Hsuan},
+        Booktitle                = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+        Year                     = {2016},
+        Month                    = {June}
+        }
+</pre>
+</font>
+</p>
+        <hr>
+
+
+
+
+<p><strong><span><font size="4">Experimental Results</font></span></strong></p>
+    <p>
+        <font color="#ff0000" size="4"> More results are included in <a href="dark-channel-deblur/cvpr16-dark-channel-deblur-supp.pdf">supplemental material</a></font>.
+    </p>
+    <br>
+
+    <p class="style1"><strong>Natural image deblurring</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="dark-channel-deblur/real_leaf.bmp"><img alt="" width="400" src="dark-channel-deblur/real_leaf.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/real_leaf_xul0.bmp"><img alt="" width="400" src="dark-channel-deblur/real_leaf_xul0.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/treal_leaf_text.bmp"><img alt="" width="400" src="dark-channel-deblur/real_leaf_text.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/real_leaf_our.bmp"><img alt="" width="400" src="dark-channel-deblur/real_leaf_our.bmp"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">Pan et al. CVPR 2014 </td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="dark-channel-deblur/flower.png"><img alt="" width="400" src="dark-channel-deblur/flower.png"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/flower_cho.png"><img alt="" width="400" src="dark-channel-deblur/flower_cho.png"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/flower_xu.png"><img alt="" width="400" src="dark-channel-deblur/flower_xu.png"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/flower_our.png"><img alt="" width="400" src="dark-channel-deblur/flower_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009</td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010</td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p class="style1"><strong>Text image deblurring</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="dark-channel-deblur/7_patch_use.bmp"><img alt="" width="400" src="dark-channel-deblur/7_patch_use.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/7_patch_use_xul0.bmp"><img alt="" width="400" src="dark-channel-deblur/7_patch_use_xul0.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/7_patch_use_text.bmp"><img alt="" width="400" src="dark-channel-deblur/7_patch_use_text.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/7_patch_use_our.bmp"><img alt="" width="400" src="dark-channel-deblur/7_patch_use_our.bmp"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">Pan et al. CVPR 2014 </td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="dark-channel-deblur/1_pattt_use.bmp"><img alt="" width="400" src="dark-channel-deblur/1_pattt_use.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/1_pattt_use_xul0.bmp"><img alt="" width="400" src="dark-channel-deblur/1_pattt_use_xul0.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/1_pattt_use_text.bmp"><img alt="" width="400" src="dark-channel-deblur/1_pattt_use_text.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/1_pattt_use_our.bmp"><img alt="" width="400" src="dark-channel-deblur/1_pattt_use_our.bmp"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">Pan et al. CVPR 2014 </td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p class="style1"><strong>Low-illumination image deblurring</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="dark-channel-deblur/26.bmp"><img alt="" width="400" src="dark-channel-deblur/26.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/26_xul0.png"><img alt="" width="400" src="dark-channel-deblur/26_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/26_hu.bmp"><img alt="" width="400" src="dark-channel-deblur/26_hu.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/26_our.bmp"><img alt="" width="400" src="dark-channel-deblur/26_our.bmp"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">Hu et al. CVPR 2014 </td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="dark-channel-deblur/IMG_4548_small.bmp"><img alt="" width="400" src="dark-channel-deblur/IMG_4548_small.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/IMG_4548_small_xul0.bmp"><img alt="" width="400" src="dark-channel-deblur/IMG_4548_small_xul0.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/IMG_4548_small_hu.bmp"><img alt="" width="400" src="dark-channel-deblur/IMG_4548_small_hu.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/IMG_4548_small_our.bmp"><img alt="" width="400" src="dark-channel-deblur/IMG_4548_small_our.bmp"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">He et al. CVPR 2014</td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p class="style1"><strong>Face image deblurring</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="dark-channel-deblur/real_img2.bmp"><img alt="" width="400" src="dark-channel-deblur/real_img2.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/real_img2_xul0.bmp"><img alt="" width="400" src="dark-channel-deblur/real_img2_xul0.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/real_img2_pan_eccv14.bmp"><img alt="" width="400" src="dark-channel-deblur/real_img2_pan_eccv14.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/real_img2_our.bmp"><img alt="" width="400" src="dark-channel-deblur/real_img2_our.bmp"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">Pan et al. ECCV 2014 </td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="dark-channel-deblur/real_blur_img3.bmp"><img alt="" width="400" src="dark-channel-deblur/real_blur_img3.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/real_blur_img3_xul0.bmp"><img alt="" width="400" src="dark-channel-deblur/real_blur_img3_xul0.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/real_blur_img3_pan_eccv14.bmp"><img alt="" width="400" src="dark-channel-deblur/real_blur_img3_pan_eccv14.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/real_blur_img3_our.bmp"><img alt="" width="400" src="dark-channel-deblur/real_blur_img3_our.bmp"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">Pan et al. ECCV 2014</td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p class="style1"><strong>Non-uniform image deblurring</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="dark-channel-deblur/yosemite_non_uniform_blur.bmp"><img alt="" width="400" src="dark-channel-deblur/yosemite_non_uniform_blur.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/yosemite_non_uniform_blur_whyte.bmp"><img alt="" width="400" src="dark-channel-deblur/yosemite_non_uniform_blur_whyte.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/yosemite_non_uniform_blur_xul0.bmp"><img alt="" width="400" src="dark-channel-deblur/yosemite_non_uniform_blur_xul0.bmp"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/yosemite_non_uniform_blur_our.bmp"><img alt="" width="400" src="dark-channel-deblur/yosemite_non_uniform_blur_our.bmp"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Whyte et al. IJCV 2012</td>
+                <td class="style1" style="height: 22px">Xu et al. CVPR 2013 </td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="dark-channel-deblur/Pertol_Station.jpg"><img alt="" width="400" src="dark-channel-deblur/Pertol_Station.jpg"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/Pertol_Station_gupta.jpg"><img alt="" width="400" src="dark-channel-deblur/Pertol_Station_gupta.jpg"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/Pertol_Station_xul0.png"><img alt="" width="400" src="dark-channel-deblur/Pertol_Station_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="dark-channel-deblur/Pertol_Station_our.png"><img alt="" width="400" src="dark-channel-deblur/Pertol_Station_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Gupta et al. ECCV 2010</td>
+                <td class="style1" style="height: 22px">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+<br>
+    <br>
+
+    <hr>
+    <p><strong><span><font size="4">Quantitative Evaluation on Natural Image Deblurring Datasets</font></span></strong></p>
+    <table align="center">
+
+        <tbody>
+            <tr>
+                <td>
+                    <img alt="" style="max-width:99%;  border:1px solid black;" width="500" src="dark-channel-deblur/Levin_dataset_results_matlab_revised_supp.png"></a>
+                </td>
+
+                <td>
+                    <img alt="" style="max-width:99%;  border:1px solid black;" width="500" src="dark-channel-deblur/ECCV12_dataset_results_matlab_revised.png"></a>
+                </td>
+
+                <td>
+                    <img alt="" style="max-width:99%;  border:1px solid black;" width="500" src="dark-channel-deblur/Sun_dataset_results_matlab_revised_supp.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center;width:434px;height:21px">Results on <a href="http://www.wisdom.weizmann.ac.il/~levina/papers/LevinEtalCVPR09Data.rar">Levin et al. CVPR 2009's dataset</a></td>
+
+                <td style="text-align:center;width:434px;height:21px">Results on <a href="http://webdav.is.mpg.de/pixel/benchmark4camerashake/">Köhler et al. ECCV 2012's dataset</a></td>
+
+                <td style="text-align:center;width:434px;height:21px">Results on <a href="http://cs.brown.edu/~lbsun/deblur2013/deblur2013iccp.html">Sun et al. ICCP 2013's dataset</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <hr>
+
+    <br>
+    <p><strong><font size="4">References</font></strong></p>
+
+    <p>[1] S. Cho and S. Lee. “Fast motion deblurring”, SIGGRAPH ASIA 2009.</p>
+
+    <p>[2] L. Xu and J. Jia. “Two-phase kernel estimation for robust motion deblurring”, ECCV 2010.</p>
+
+    <p>[3] L. Xu, S. Zheng, and J. Jia. “Unnatural <em>L</em><sub>0</sub> sparse representation for natural image deblurring”, CVPR 2013.</p>
+
+    <p>[4] J. Pan, Z. Hu, Z. Su, and M.-H. Yang. “Deblurring text images via L0-regularized intensity and gradient prior”, CVPR 2014.</p>
+
+    <p>[5] Z. Hu,&nbsp;S. Cho, J. Wang, and M.-H. Yang. “Deblurring low-light images with light streaks”, CVPR 2014.</p>
+
+    <p>[6] J. Pan, Z. Hu, Z. Su, and M.-H. Yang. “Deblurring face images with exemplars”, ECCV 2014.</p>
+
+    <p>[7] O. Whyte, J. Sivic, A. Zisserman, and J. Ponce. “Non-uniform deblurring for shaken images”, IJCV 2012.</p>
+
+    <p>[8] A. Gupta, N. Joshi, L. Zitnick, M. Cohen, and B. Curless. “Single image deblurring using motion density functions”, ECCV 2010.</p>
+
+    <p>[9] A. Levin, Y. Weiss, F. Durand, and W. T. Freeman, “Understanding and evaluating blind deconvolution algorithms,” CVPR 2009.</p>
+
+    <p>[10] R. Kohler, M. Hirsch, B. Mohler and B. Scholkopf. “Recording and playback of camera shake:&nbsp;benchmarking blind deconvolution with a real-world database”, ECCV 2012.</p>
+
+    <p>[11] L. Sun, S. Cho, J.Wang, and J. Hays. "Edge-based blur kernel estimation using patch priors", ICCP 2013. </p>
+
+    <br>
+    <br>
+    <div id="sbi_camera_button" class="sbi_search" style="left: 0px; top: 0px; position: absolute; width: 29px; height: 27px; border: none; margin: 0px; padding: 0px; z-index: 2147483647; display: none;"></div>
+</body>
+</html>

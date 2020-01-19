@@ -1,0 +1,679 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Physics-Based Generative Adversarial Models for Image Restoration and Beyond</title>
+    <style type="text/css">
+        body {
+            font: 100% Verdana, Arial, sans-serif;
+        }
+
+        a, a:link, a:visited {
+            color: #1f82a9;
+            background: transparent text-decoration: underline;
+            cursor: pointer;
+            background-color: underline;
+        }
+
+        .style1 {
+            text-align: center;
+        }
+
+        .style2 {
+            text-align: left;
+        }
+
+        .style3 {
+            font-size: large;
+            color: #0000FF;
+        }
+
+        .style5 {
+            text-align: left;
+            font-size: large;
+            color: #0000FF;
+        }
+
+        .style7 {
+            text-align: center;
+            font-size: large;
+        }
+
+        .style8 {
+            text-align: center;
+            font-size: large;
+            color: #FF0000;
+        }
+
+        .style9 {
+            color: #FF0000;
+        }
+
+        .style10 {
+            font-size: large;
+        }
+
+        .style12 {
+            font-size: x-large;
+            text-align: center;
+            background-color: #C0C0C0;
+        }
+
+        .style13 {
+            font-size: 16pt;
+            color: #0000FF;
+        }
+
+        .auto-style1 {
+            text-align: center;
+            font-size: medium;
+        }
+
+        .auto-style2 {
+            font-family: Verdana;
+        }
+
+        .auto-style3 {
+            color: #1F82A9;
+        }
+    </style>
+</head>
+<body>
+
+    <br>
+    <h1 style="text-align:center">
+        Physics-Based Generative Adversarial Models for Image Restoration and Beyond
+    </h1>
+
+    <br>
+    <p style="text-align:center">
+        <font color="#000000" size="3">
+            <a href="https://sites.google.com/site/jspanhomepage/">Jinshan Pan</a>&nbsp;&nbsp;&nbsp;&nbsp;Yang Liu&nbsp;&nbsp;&nbsp;&nbsp;Jiangxin Dong&nbsp;&nbsp;&nbsp;&nbsp;
+            Jiawei Zhang&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.jimmyren.com/">Jimmy Ren</a>&nbsp;&nbsp;&nbsp;&nbsp;Jinhui Tang&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="https://scholar.google.com/citations?user=nFhLmFkAAAAJ&hl=en">Yu-Wing Tai</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://faculty.ucmerced.edu/mhyang/">Ming-Hsuan Yang</a>
+        </font>
+    </p>
+
+
+    <p><strong><span><font size="4">Abstract</font></span></strong></p>
+
+    <p>
+        We present an algorithm to directly solve numerous image restoration problems (e.g., image deblurring, image
+        dehazing, image deraining, etc.). These problems are highly ill-posed, and the common assumptions for existing methods
+        are usually based on heuristic image priors. In this paper, we find that these problems can be solved by generative models
+        with adversarial learning. However, the basic formulation of generative adversarial networks (GANs) does not generate realistic
+        images, and some structures of the estimated images are usually not preserved well. Motivated by an interesting observation
+        that the estimated results should be consistent with the observed inputs under the physics models, we propose a physics model
+        constrained learning algorithm so that it can guide the estimation of the specific task in the conventional GAN framework. The
+        proposed algorithm is trained in an end-to-end fashion and can be applied to a variety of image restoration and related low-level
+        vision problems. Extensive experiments demonstrate that our method performs favorably against the state-of-the-art algorithms.
+    </p>
+
+    <br>
+    <p style="text-align:center"><strong><span><font size="4">Image Deblurring</font></span></strong></p>
+
+    <table align="center">
+
+        <tbody>
+            <tr>
+
+                <td>
+                    <a href="physicsgan/DSC_0035_patch.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="physicsgan/DSC_0035_patch.png" width="420"></a>
+                </td>
+
+
+                <td>
+                    <a href="physicsgan/DSC_0035_patch_bmvc.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="physicsgan/DSC_0035_patch_bmvc.png" width="420"></a>
+                </td>
+
+                <td>
+                    <a href="physicsgan/DSC_0035_patch_our.png?attredirects=0"><img alt="" style="max-width:99%;  border:1px solid black;" src="physicsgan/DSC_0035_patch_our.png" width="420"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center">Blurred image</td>
+
+
+                <td style="text-align:center">Hradiš et al.</a></td>
+
+                <td style="text-align:center">Ours</td>
+            </tr>
+            <tr>
+
+                <td>
+                    <a href="physicsgan/test_im_input.png"><img src="physicsgan/test_im_input.png" width="420"></a>
+                </td>
+
+
+                <td>
+                    <a href="physicsgan/test_im_deblurgan.png"><img src="physicsgan/test_im_deblurgan.png" width="420"></a>
+                </td>
+
+                <td>
+                    <a href="physicsgan/test_im_our.png"><img src="physicsgan/test_im_our.png" width="420"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center">Blurred image</td>
+
+
+                <td style="text-align:center">DeblurGAN</a></td>
+
+                <td style="text-align:center">Ours</td>
+            </tr>
+            <tr>
+
+                <td>
+                    <a href="physicsgan/face03.png"><img src="physicsgan/face03.png" width="420"></a>
+                </td>
+
+
+                <td>
+                    <a href="physicsgan/face03_pan.png?attredirects=0"><img src="physicsgan/face03_pan.png" width="420"></a>
+                </td>
+
+                <td>
+                    <a href="physicsgan/face03_our.png?attredirects=0"><img src="physicsgan/face03_our.png" width="420"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center">Blurred image</td>
+
+
+                <td style="text-align:center"><a href="https://sites.google.com/site/jspanhomepage/facedeblurring">Pan et al.</a></td>
+
+                <td style="text-align:center">Ours</td>
+            </tr>
+            <tr></tr>
+        </tbody>
+    </table>
+
+    <p />
+    <p />
+    <p style="text-align:center"><strong><span><font size="4">Image Dehazing</font></span></strong></p>
+
+    <table align="center">
+        <tbody align="center">
+            <tr>
+                <td style="width:434px;height:299px">
+                    <a href="physicsgan/example04.png"><img src="physicsgan/example04.png" width="434"></a>
+                </td>
+
+
+                <td style="width:434px;height:299px">
+                    <a href="physicsgan/example04_gan.png"><img src="physicsgan/example04_gan.png" width="434"></a>
+                </td>
+
+                <td style="width:434px;height:299px">
+                    <a href="physicsgan/example04_our.png"><img src="physicsgan/example04_our.png" width="434"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center;width:434px;height:21px">Hazy image</td>
+
+
+                <td style="text-align:center;width:434px;height:21px">GAN dehazing</a></td>
+
+                <td style="text-align:center;width:434px;height:21px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+    <p />
+    <p />
+    <p style="text-align:center"><strong><span><font size="4">Image Deraining</font></span></strong></p>
+
+    <table align="center">
+        <tbody align="center">
+            <tr>
+                <td style="width:434px;height:299px">
+                    <a href="physicsgan/2.png"><img src="physicsgan/2.png" width="434"></a>
+                </td>
+
+
+                <td style="width:434px;height:299px">
+                    <a href="physicsgan/2-id-gan.jpg"><img src="physicsgan/2-id-gan.jpg" width="434"></a>
+                </td>
+
+                <td style="width:434px;height:299px">
+                    <a href="physicsgan/2_our.png"><img src="physicsgan/2_our.png" width="434"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center;width:434px;height:21px">Rainy image</td>
+
+
+                <td style="text-align:center;width:434px;height:21px">GAN deraining</a></td>
+
+                <td style="text-align:center;width:434px;height:21px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+    <p />
+    <p />
+    <div style="text-align:left">
+        <font size="4">
+            Some applications in image restoration. Our method is motivated by a key observation that the restored results should be consistent with the observed inputs under the degradation process (i.e., physics model). 
+            With the physics model constraint in the training stage, the proposed end-to-end trainable network is not totally blind and is able to generate physically correct results. It can be applied to several image restoration 
+            and related low-level vision problems and performs favorably against state-of-the-art algorithms.
+        </font>
+    </div>
+    <p />
+    <p />
+    <br>
+    <hr>
+
+    <br>
+
+    <p><strong><span><font size="4">Proposed Algorithm</font></span></strong></p>
+
+
+    <table align="center">
+
+        <tbody align="center">
+            <tr>
+
+                <td style="text-align:center">
+                    <a href="physicsgan/flow_chart.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="physicsgan/flow_chart.png" width="1300"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <p />
+                <p />
+                <br>
+                <td style="text-align:left">
+                    <font size="4">
+                        The proposed framework. The discriminative network $\mathcal{D}_g$ is used to classify whether the distributions of the outputs from the generator $\mathcal{G}$ are close to those of
+                        the ground truth images or not. The discriminative network $\mathcal{D}_h$ is used to classify whether the regenerated result $\widetilde{y}_i$ is consistent with the observed image $y_i$ or not. All the networks are jointly trained in an end-to-end manner.
+                    </font>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <hr>
+
+    <br>
+    <p><strong><font size="4">Visual Comparisons</font></strong></p>
+    <img alt="" height="45" src="physicsgan/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+    <a href="physicsgan/tpami18_physical_model_supp_v1.pdf">More applications and experimental results can be find in the supplemental material</a>&nbsp; &nbsp; &nbsp;
+    <p class="style1">&nbsp;</p>
+    <p class="style1"><strong>Image Deblurring</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="physicsgan/0000091_blur.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/0000091_blur_xul0.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/0000091_blur_text.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_text.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/0000091_blur_dark.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_dark.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Xu et al.</td>
+                <td class="style1" style="height: 22px">Pan et al. (TPAMI 2017)</td>
+                <td class="style1" style="height: 22px">Pan et al. (CVPR 2016)</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="physicsgan/0000091_blur_nah.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_nah.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/0000091_blur_bmvc.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_bmvc.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/0000091_blur_cycleGAN.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_cycleGAN.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/0000091_blur_out.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/0000091_blur_out.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Nah et al. </td>
+                <td class="style1" style="height: 22px;">Hradiš et al.</td>
+                <td class="style1" style="height: 22px">CycleGAN</td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="physicsgan/face02.png"><img alt="" width="400" src="physicsgan/face02.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/face02_xul0.png"><img alt="" width="400" src="physicsgan/face02_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/face2_pan_text.png"><img alt="" width="400" src="physicsgan/face2_pan_text.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/face02_pan16.png"><img alt="" width="400" src="physicsgan/face02_pan16.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Xu et al.</td>
+                <td class="style1" style="height: 22px">Pan et al. (TPAMI 2017)</td>
+                <td class="style1" style="height: 22px">Pan et al. (ECCV 2014)</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="physicsgan/face02_zhang.png"><img alt="" width="400" src="physicsgan/face02_zhang.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/face02_deblurgan.png"><img alt="" width="400" src="physicsgan/face02_deblurgan.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/face02_deblur.png"><img alt="" width="400" src="physicsgan/face02_deblur.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/face02_our.png"><img alt="" width="400" src="physicsgan/face02_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Zhang et al.</td>
+                <td class="style1" style="height: 22px;">DeblurGAN</td>
+                <td class="style1" style="height: 22px">CycleGAN</td>
+                <td class="style1" style="height: 22px">Ours </td>
+            </tr>
+        </tbody>
+    </table>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="physicsgan/57_input.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_input.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/57_xul0.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/57_pan_text.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_pan_text.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/57_pan16_dark.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_pan16_dark.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Xu et al. </td>
+                <td class="style1" style="height: 22px">Pan et al. (TPAMI 2017)</td>
+                <td class="style1" style="height: 22px">Pan et al. (ECCV 2014)</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="physicsgan/57_zhang.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_zhang.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/57_deblurgan.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_deblurgan.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/57_input.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_input.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/57_our.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/57_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Zhang et al.</td>
+                <td class="style1" style="height: 22px;">DeblurGAN</td>
+                <td class="style1" style="height: 22px">CycleGAN</td>
+                <td class="style1" style="height: 22px">Ours </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+
+
+    <br><br>
+    <p class="style1"><strong>Image Dehazing</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="physicsgan/45_outdoor.png"><img alt="" width="400" src="physicsgan/45_outdoor.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/45_outdoor_he.png"><img alt="" width="400" src="physicsgan/45_outdoor_he.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/45_outdoor_meng.png"><img alt="" width="400" src="physicsgan/45_outdoor_meng.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/45_outdoor_nonlocal.png"><img alt="" width="400" src="physicsgan/45_outdoor_nonlocal.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Hazy image</td>
+                <td class="style1" style="height: 22px;">He et al.</td>
+                <td class="style1" style="height: 22px">Meng et al.</td>
+                <td class="style1" style="height: 22px">Berman et al. </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="physicsgan/45_outdoor_chen.png"><img alt="" width="400" src="physicsgan/45_outdoor_chen.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/45_outdoor_cai.png"><img alt="" width="400" src="physicsgan/45_outdoor_cai.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/45_outdoor_ren.png"><img alt="" width="400" src="physicsgan/45_outdoor_ren.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/45_outdoor_our.png"><img alt="" width="400" src="physicsgan/45_outdoor_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Chen et al. </td>
+                <td class="style1" style="height: 22px;">Cai et al.</td>
+                <td class="style1" style="height: 22px">Ren et al. </td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+
+    <p style="text-align:center"><strong><span><font size="4">Image Deraining</font></span></strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="physicsgan/79_real_A.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/79_real_A.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/79_real_A_li.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/79_real_A_li.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/79_gan.jpg"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/79_gan.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/79-tip.jpg"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/79-tip.jpg"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Rainy image </td>
+                <td class="style1" style="height: 22px;">Li et al.  </td>
+                <td class="style1" style="height: 22px">Zhang et al. </td>
+                <td class="style1" style="height: 22px">Fu et al. </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="physicsgan/79-cvpr17.jpg"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/79-cvpr17.jpg"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/79-Conditional-GAN.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/79-Conditional-GAN.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/79_cyclegan.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/79_cyclegan.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/79_our.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="physicsgan/79_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Yang et al.</a> </td>
+                <td class="style1" style="height: 22px;">pix2pix </td>
+                <td class="style1" style="height: 22px">CycleGAN </td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <br>
+    <br>
+
+    <p style="text-align:center"><strong><span><font size="4">Edge-preserving Filter Approximation</font></span></strong></p>
+
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="physicsgan/2_real_A.png"><img width="400" src="physicsgan/2_real_A.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/2_xu.png"><img width="400" src="physicsgan/2_xu.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/2_fake_B.png"><img width="400" src="physicsgan/2_fake_B.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/2_gt.png"><img width="400" src="physicsgan/2_gt.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="physicsgan/4_real_A.png"><img alt="" width="400" src="physicsgan/4_real_A.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/4_xu.png"><img alt="" width="400" src="physicsgan/4_xu.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/4_fake_B.png"><img alt="" width="400" src="physicsgan/4_fake_B.png"></a>
+                </td>
+                <td>
+                    <a href="physicsgan/4_gt.png"><img alt="" width="400" src="physicsgan/4_gt.png"></a>
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td class="style1" style="height: 22px">Input image</td>
+                <td class="style1" style="height: 22px">Xu et al.</td>
+                <td class="style1" style="height: 22px;">Ours</td>
+                <td class="style1" style="height: 22px">L0 smoothing filter</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="text-align:center"><span><font size="4">L0 smoothing filter approximation</font></span></p>
+
+    <br>
+    <br>
+    <hr>
+
+    <br>
+    <p><strong><font size="4">Technical Papers, Codes, and Datasets</font></strong></p>
+    <table align="center">
+        <tbody align="center">
+            Jinshan Pan, Yang Liu, Jiangxin Dong, Jiawei Zhang, Jimmy Ren, Jinhui Tang, Yu-Wing Tai and Ming-Hsuan Yang, "Physics-Based Generative Adversarial Models
+            for Image Restoration and Beyond", submitted to IEEE Transactions on Pattern Analysis and Machine Intelligence (<b><i>IEEE TPAMI</i></b>), 2018.
+            <br>
+            <br>
+            <img alt="" height="45" src="physicsgan/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="">Paper coming soon...</a>&nbsp; &nbsp; &nbsp; &nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="physicsgan/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="">Supplemental material</a>&nbsp; &nbsp; &nbsp; &nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="physicsgan/code.png" width="45">
+            &nbsp;
+            <a href="https://www.dropbox.com/s/yayzu4qx4rb0s8e/physicsgan-code.zip?dl=0">Source code</a>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="physicsgan/database_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="">Datasets comming soon...</a>&nbsp;&nbsp;&nbsp;
+
+            </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <br>
+    <p><strong><font size="4">References</font></strong></p>
+
+    <p>[1] I. J. Goodfellow, J. Pouget-Abadie, M. Mirza, B. Xu, D. Warde Farley, S. Ozair, A. C. Courville, and Y. Bengio, “Generative adversarial nets,” in NIPS, 2014, pp. 2672–2680.</p>
+
+    <p>[2] P. Isola, J.-Y. Zhu, T. Zhou, and A. A. Efros, “Image-to-image translation with conditional adversarial networks,” in CVPR, 2017, pp. 1125–1134.</p>
+
+    <p>[3] M. Hradis, J. Kotera, P. Zemc´ık, and F. Sroubek, “Convolutional neural networks for direct text deblurring,” in BMVC, 2015, pp. 6.1–6.13.</p>
+
+    <p>[4] S. Nah, T. Hyun Kim, and K. Mu Lee, “Deep multi-scale convolutional neural network for dynamic scene deblurring,” in CVPR, 2017, pp. 3883–3891.</p>
+
+    <p>[5] L. Xu, S. Zheng, and J. Jia, “Unnatural L0 sparse representation for natural image deblurring,” in CVPR, 2013, pp. 1107–1114.</p>
+
+    <p>[6] J. Pan, D. Sun, H. Pfister, and M.-H. Yang, “Blind image deblurring using dark channel prior,” in CVPR, 2016, pp. 1628–1636.</p>
+
+    <p>[7] O. Kupyn, V. Budzan, M. Mykhailych, D. Mishkin, and J. Matas, “Deblurgan: Blind motion deblurring using conditional adversarial networks,” in CVPR, 2018, pp. 8183–8192.</p>
+
+    <p>[8] O. Whyte, J. Sivic, A. Zisserman, and J. Ponce, “Non-uniform deblurring for shaken images,” International Journal of Computer Vision, vol. 98, no. 2, pp. 168–186, 2012.</p>
+
+    <p>[9] L. Xu, J. S. J. Ren, Q. Yan, R. Liao, and J. Jia, “Deep edge-aware filters,” in ICML, 2015, pp. 1669–1678.</p>
+
+    <p>[10] J. Pan, Z. Hu, Z. Su, and M.-H. Yang, “L0-regularized intensity and gradient prior for deblurring text images and beyond,” IEEE TPAMI, vol. 39, no. 2, pp. 342–355, 2017.</p>
+
+    <p>[11] J.-Y. Zhu, T. Park, P. Isola, and A. A. Efros, “Unpaired image-toimage translation using cycle-consistent adversarial networks,” in ICCV, 2017, pp. 2223–2232.</p>
+
+    <p>[12] S. Cho and S. Lee, “Fast motion deblurring,” in SIGGRAPH Asia, vol. 28, no. 5, 2009, p. 145. </p>
+
+    <p>[13] C. Dong, C. C. Loy, K. He, and X. Tang, “Learning a deep convolutional network for image super-resolution,” in ECCV, 2014, pp. 184–199.</p>
+
+    <p>[14] J. Zhang, J. Pan, J. Ren, Y. Song, L. Bao, R. W. Lau, and M.-H. Yang, “Dynamic scene deblurring using spatially variant recurrent neural networks,” in CVPR, 2018, pp. 2521–2529.</p>
+
+    <p>[15] C. Ledig, L. Theis, F. Huszar, J. Caballero, A. Cunningham, A. Acosta, A. Aitken, A. Tejani, J. Totz, Z. Wang, and W. Shi, “Photo-realistic single image super-resolution using a generative adversarial network,” in CVPR, 2017, pp. 4681–4690.</p>
+
+    <p>[16] K. He, J. Sun, and X. Tang, “Single image haze removal using dark channel prior,” in CVPR, 2009, pp. 1956–1963.</p>
+
+    <p>[17] D. Berman, T. Treibitz, and S. Avidan, “Non-local image dehazing,” in CVPR, 2016, pp. 1674–1682.</p>
+
+    <p>[18] C. Chen, M. N. Do, and J. Wang, “Robust image and video dehazing with visual artifact suppression via gradient residual minimization,” in ECCV, 2016, pp. 576–591.</p>
+
+    <p>[19] W. Ren, S. Liu, H. Zhang, J. Pan, X. Cao, and M.-H. Yang, “Single image dehazing via multi-scale convolutional neural networks,” in ECCV, 2016, pp. 154–169.</p>
+
+    <p>[20] B. Cai, X. Xu, K. Jia, C. Qing, and D. Tao, “Dehazenet: An end-to-end system for single image haze removal,” IEEE TIP, vol. 25, no. 11, pp. 5187–5198, 2016.</p>
+
+    <p>[21] G. Meng, Y. Wang, J. Duan, S. Xiang, and C. Pan, “Efficient image dehazing with boundary constraint and contextual regularization,” in ICCV, 2013, pp. 617–624.</p>
+
+        <br>
+        <br>
+        <div id="sbi_camera_button" class="sbi_search" style="left: 0px; top: 0px; position: absolute; width: 29px; height: 27px; border: none; margin: 0px; padding: 0px; z-index: 2147483647; display: none;"></div>
+</body>
+</html>

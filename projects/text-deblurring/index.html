@@ -1,0 +1,1518 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>L0-Regularized Intensity and Gradient Prior for Deblurring Text Images and Beyond</title>
+    <style type="text/css">
+        body {
+            font: 100% Verdana, Arial, sans-serif;
+        }
+
+        a, a:link, a:visited {
+            color: #1f82a9;
+            background: transparent text-decoration: underline;
+            cursor: pointer;
+            background-color: underline;
+        }
+
+        .style1 {
+            text-align: center;
+        }
+
+        .style2 {
+            text-align: left;
+        }
+
+        .style3 {
+            font-size: large;
+            color: #0000FF;
+        }
+
+        .style5 {
+            text-align: left;
+            font-size: large;
+            color: #0000FF;
+        }
+
+        .style7 {
+            text-align: center;
+            font-size: large;
+        }
+
+        .style8 {
+            text-align: center;
+            font-size: large;
+            color: #FF0000;
+        }
+
+        .style9 {
+            color: #FF0000;
+        }
+
+        .style10 {
+            font-size: large;
+        }
+
+        .style12 {
+            font-size: x-large;
+            text-align: center;
+            background-color: #C0C0C0;
+        }
+
+        .style13 {
+            font-size: 16pt;
+            color: #0000FF;
+        }
+
+        .auto-style1 {
+            text-align: center;
+            font-size: medium;
+        }
+
+        .auto-style2 {
+            font-family: Verdana;
+        }
+
+        .auto-style3 {
+            color: #1F82A9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align:center">
+        <em>&nbsp;L</em><sub>0</sub>-Regularized Intensity and Gradient Prior for Deblurring Text Images and Beyond
+    </h1>
+    <p style="text-align:center">
+        <em><font size="4"> AN EXTENSION METHOD OF <a href="https://eng.ucmerced.edu/people/zhu/CVPR14_text.html"> OUR TEXT DEBLURRING ALGORITHM</a>&nbsp; </font></em>
+    </p>
+
+    <p style="text-align:center">
+        <font color="#000000" size="3">
+            <a href="https://sites.google.com/site/jspanhomepage/">Jinshan Pan</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://eng.ucmerced.edu/people/zhu">Zhe Hu</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">Zhixun Su</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="http://faculty.ucmerced.edu/mhyang/">Ming-Hsuan Yang</a>
+        </font>
+    </p>
+
+
+    <p><strong><span><font size="4">Abstract</font></span></strong></p>
+
+    <p>
+        We propose a simple yet effective <em>L</em><sub><span>0</span></sub>-regularized prior based on intensity and gradient for text image deblurring.
+        The proposed image prior is motivated by observing distinct properties of text images. Based on this prior, we develop an efficient
+        optimization algorithm to generate reliable intermediate results for kernel estimation. The proposed algorithm does not require
+        any heuristic edge selection strategies which are critical to state-of-the-art edge-based deblurring methods. We discuss the
+        relationship with other edge-based deblurring methods and discuss how to select salient edges more principally. For the final
+        latent image restoration step, we present a effective method to remove artifacts and render better deblurred images. We show the
+        proposed algorithm can be extended to deblur natural images with complex scenes and low illumination. In addition, we discuss
+        the application of the proposed algorithm for non-uniform image deblurring. Experimental results demonstrate that the proposed
+        algorithm performs favorably against the state-of-the-art image deblurring methods.
+    </p>
+
+    <br>
+    <p style="text-align:center"><strong><span><font size="4">Uniform Blind Image Deblurring</font></span></strong></p>
+
+    <table align="center">
+
+        <tbody>
+            <tr>
+
+                <td>
+                    <a href="L0RIG_deblur/new_test_img12_blur_129.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/new_test_img12_blur_129.png" width="420"></a>
+                </td>
+
+
+                <td>
+                    <a href="L0RIG_deblur/new_test_img12_blur_129_cho_eccv12.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/new_test_img12_blur_129_cho_eccv12.png" width="420"></a>
+                </td>
+
+                <td>
+                    <a href="L0RIG_deblur/new_test_img12_blur_129_our.png?attredirects=0"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/new_test_img12_blur_129_our.png" width="420"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center">Blurred image</td>
+
+
+                <td style="text-align:center"><a href="http://cg.postech.ac.kr/research/text_deblur/">Cho et al. ECCV 2012</a></td>
+
+                <td style="text-align:center">IL0RIG</td>
+            </tr>
+            <tr>
+
+                <td>
+                    <a href="L0RIG_deblur/Our_captured_blurred_new.jpg"><img src="L0RIG_deblur/Our_captured_blurred_new.jpg" width="420"></a>
+                </td>
+
+
+                <td>
+                    <a href="L0RIG_deblur/Our_captured_cho_new.jpg?attredirects=0"><img src="L0RIG_deblur/Our_captured_cho_new.jpg" width="420"></a>
+                </td>
+
+                <td>
+                    <a href="L0RIG_deblur/Our_captured_our_with_whyte_new.jpg?attredirects=0"><img src="L0RIG_deblur/Our_captured_our_with_whyte_new.jpg" width="420"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center">Blurred image</td>
+
+
+                <td style="text-align:center"><a href="http://cg.postech.ac.kr/research/fast_motion_deblurring/">Cho and Lee Siggraph Asia 2009</a></td>
+
+                <td style="text-align:center">IL0RIG</td>
+            </tr>
+            <tr>
+
+                <td>
+                    <a href="L0RIG_deblur/toy.png"><img src="L0RIG_deblur/toy.png" width="420"></a>
+                </td>
+
+
+                <td>
+                    <a href="L0RIG_deblur/toyout_xu.png?attredirects=0"><img src="L0RIG_deblur/toyout_xu.png" width="420"></a>
+                </td>
+
+                <td>
+                    <a href="L0RIG_deblur/toy_result_our.png?attredirects=0"><img src="L0RIG_deblur/toy_result_our.png" width="420"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center">Blurred image</td>
+
+
+                <td style="text-align:center"><a href="http://www.cse.cuhk.edu.hk/leojia/projects/robust_deblur/index.html">Xu and Jia ECCV 2010</a></td>
+
+                <td style="text-align:center">IL0RIG</td>
+            </tr>
+            <tr></tr>
+        </tbody>
+    </table>
+
+    <p />
+    <p />
+    <p style="text-align:center"><strong><span><font size="4">Non-Uniform Blind Image Deblurring</font></span></strong></p>
+
+    <table align="center">
+        <tbody align="center">
+            <tr>
+                <td style="width:434px;height:299px">
+                    <a href="L0RIG_deblur/blurred2.jpg"><img src="L0RIG_deblur/blurred2.jpg" width="434"></a>
+                </td>
+
+
+                <td style="width:434px;height:299px">
+                    <a href="L0RIG_deblur/blurred2_xul0.png"><img src="L0RIG_deblur/blurred2_xul0.png" width="434"></a>
+                </td>
+
+                <td style="width:434px;height:299px">
+                    <a href="L0RIG_deblur/blurred2_result_our.png"><img src="L0RIG_deblur/blurred2_result_our.png" width="434"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center;width:434px;height:21px">Blurred image</td>
+
+
+                <td style="text-align:center;width:434px;height:21px"><a href="http://www.cse.cuhk.edu.hk/leojia/projects/l0deblur/index.html">Xu et al. CVPR 2013</a></td>
+
+                <td style="text-align:center;width:434px;height:21px">IL0RIG</td>
+            </tr>
+        </tbody>
+    </table>
+    <p />
+    <p />
+    <div style="text-align:center">
+        <font size="4">
+            Figure 1. Some challenging examples including text image, low-illumination image, and natural images.
+            The L0RIG and IL0RIG in this material denote <a href="https://eng.ucmerced.edu/people/zhu/CVPR14_text.html"> our text deblurring method</a> and its extension.
+        </font>
+    </div>
+    <p />
+    <p />
+    <br>
+    <hr>
+
+    <br>
+
+    <p><strong><span><font size="4">Quantitative Evaluation on Text Image Dataset</font></span></strong></p>
+
+    <p>
+        We have created a dataset containing 15 images and 8 blur kernels extracted from Levin et al. CVPR 2009. Similar to this work, we can generate 120 different blurred images.
+        The 15 ground truth images and 8 blur kernels are shown in below.
+    </p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/text/im01.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im01.png" width="290" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im02.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im02.png" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im03.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im03.png" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im04.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im04.png" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im05.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im05.png" height="260" align="bottom"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align:center;height:21px">im01</td>
+                <td style="text-align:center;height:21px">im02</td>
+                <td style="text-align:center;height:21px">im03</td>
+                <td style="text-align:center;height:21px">im04</td>
+                <td style="text-align:center;height:21px">im05</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/text/im06.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im06.png" width="290" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im07.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im07.png" width="315" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im08.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im08.png" width="390" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im09.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im09.png" width="368" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im10.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im10.png" width="280" height="260" align="bottom"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: center; width =" 280"height:21px">im05</td>
+                <td style="text-align: center; width =" 260"height:21px">im06</td>
+                <td style="text-align: center; width =" 260"height:21px">im07</td>
+                <td style="text-align: center; width =" 260"height:21px">im08</td>
+                <td style="text-align: center; width =" 260"height:21px">im09</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/text/im11.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im11.png" width="290" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im12.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im12.png" width="315" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im13.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im13.png" width="390" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im14.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im14.png" width="368" height="260" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/im15.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/im15.png" width="280" height="260" align="bottom"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align:center;height:21px">im11</td>
+                <td style="text-align:center;height:21px">im12</td>
+                <td style="text-align:center;height:21px">im13</td>
+                <td style="text-align:center;height:21px">im14</td>
+                <td style="text-align:center;height:21px">im15</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/text/ker01_truth.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/ker01_truth.png" width="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/ker02_truth.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/ker02_truth.png" width="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/ker04_truth.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/ker03_truth.png" width="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/ker04_truth.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/ker04_truth.png" width="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/ker05_truth.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/ker05_truth.png" width="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/ker06_truth.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/ker06_truth.png" width="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/ker07_truth.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/ker07_truth.png" width="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/text/ker08_truth.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/text/ker08_truth.png" width="200" align="bottom"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align:center;height:21px">kernel 1</td>
+                <td style="text-align:center;height:21px">kernel 2</td>
+                <td style="text-align:center;height:21px">kernel 3</td>
+                <td style="text-align:center;height:21px">kernel 4</td>
+                <td style="text-align:center;height:21px">kernel 5</td>
+                <td style="text-align:center;height:21px">kernel 6</td>
+                <td style="text-align:center;height:21px">kernel 7</td>
+                <td style="text-align:center;height:21px">kernel 8</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <p />
+    <p />
+    <div style="text-align:center"><font size="4">Figure 2. Ground truth text images and blur kernels</font></div>
+    <br>
+    <p />
+    <p />
+    <p />
+    <p />
+    <p />
+    <p />
+    <table align="center">
+
+        <tbody align="center">
+            <tr>
+
+                <td style="text-align:center">
+                    <a href="L0RIG_deblur/Text_dataset_results_v5.jpg"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/Text_dataset_results_v5.jpg" width="1300"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <p />
+                <p />
+                <br>
+                <td style="text-align:center"><font size="4">Figure 3. Quantitative comparison on the proposed text image dataset. The x-axis denotes the image index and the average PSNR values of all the images are shown on the rightmost column.</font></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <hr>
+
+    <br>
+    <p><strong><span><font size="4">Quantitative Evaluation on Low-Illumination Image Dataset</font></span></strong></p>
+
+    <p>
+        We have created a dataset containing 6 low-illumination images and 8 blur kernels extracted from Levin et al. CVPR 2009 (See Figure 2).
+        Similar to the work [Hu et al. CVPR 2014], we stretch the pixel intensities of each image into [0, 2.2] and then
+        apply 8 different blur kernels. Finally we clip the pixel intensities into dynamic range [0, 1]. The 6 ground truth images are shown in Figure 4.
+    </p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/low/saturated_img1.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/low/saturated_img1.png" height="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/low/saturated_img2.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/low/saturated_img2.png" height="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/low/saturated_img3.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/low/saturated_img3.png" height="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/low/saturated_img4.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/low/saturated_img4.png" height="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/low/saturated_img5.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/low/saturated_img5.png" height="200" align="bottom"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/low/saturated_img6.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/low/saturated_img6.png" height="200" align="bottom"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align:center;height:21px">im01</td>
+                <td style="text-align:center;height:21px">im02</td>
+                <td style="text-align:center;height:21px">im03</td>
+                <td style="text-align:center;height:21px">im04</td>
+                <td style="text-align:center;height:21px">im05</td>
+                <td style="text-align:center;height:21px">im06</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <div style="text-align:center"><font size="4">Figure 4. Ground truth low-illumination images</font></div>
+
+    <p />
+    <p />
+    <p />
+    <p />
+    <br>
+    <table align="center">
+
+        <tbody align="center">
+            <tr>
+
+                <td style="text-align:center">
+                    <img alt="" style="max-width:99%;  border:1px solid black;" src="L0RIG_deblur/Low_illumination_results.png" width="500"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <br>
+                <td style="text-align:center"><font size="4">Figure 5. Quantitative comparison on the low-illumination dataset. The x-axis denotes the image index and the average PSNR values of all the images are shown on the rightmost column.</font></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <p><strong><span><font size="4">Quantitative Evaluation on Natural Image Deblurring Datasets by Levin et al. CVPR 2009, Köhler et al. ECCV 2012, and Sun et al., ICCP 2013</font></span></strong></p>
+
+    <p>
+        To verify the validity of the proposed method on the natural images, we test our method on the dataset of Levin et al. CVPR 2009,
+        which contains 4 ground truth images and 8 blur kernels.
+        Figure 6(a) shows the cumulative histogram of the deconvolution error ratio across test examples.
+        The proposed method achieves 100% of the results under error ratio 2.2.
+    </p>
+
+    <table align="center">
+
+        <tbody>
+            <tr>
+
+                <td>
+                    <img alt="" style="max-width:99%;  border:1px solid black;" width="500" height="400" src="L0RIG_deblur/Levin_dataset_results.png"></a>
+                </td>
+
+                <td>
+                    <img alt="" style="max-width:99%;  border:1px solid black;" width="500" height="400" src="L0RIG_deblur/ECCV12_dataset_results.png"></a>
+                </td>
+                <td>
+                    <img alt="" style="max-width:99%;  border:1px solid black;" width="500" height="400" src="L0RIG_deblur/Sun_dataset_results.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:center;width:434px;height:21px">(a) Results on the dataset by <a href="http://www.wisdom.weizmann.ac.il/~levina/papers/LevinEtalCVPR09Data.rar">Levin et al. CVPR 2009</a></td>
+
+                <td style="text-align:center;width:434px;height:21px">(b) Results on the dataset by <a href="http://webdav.is.mpg.de/pixel/benchmark4camerashake/">Köhler et al. ECCV 2012</a></td>
+
+                <td style="text-align:center;width:434px;height:21px">(c) Results on the dataset by <a href="http://cs.brown.edu/~lbsun/deblur2013/deblur2013iccp.html">Sun et al. ICCP 2013</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="text-align:center">
+        <font size="4">
+            Figure 6. Quantitative comparison on the natural image datasets by Levin et al. CVPR 2009, Köhler et al. ECCV 2012, and Sun et al., ICCP 2013.
+            The numbers below the horizontal axis in (a) and (c) denote the error ratio values.
+        </font>
+    </div>
+    <br>
+    <br>
+    <hr>
+
+    <br>
+    <p><strong><font size="4">Visual Comparisons</font></strong></p>
+    <img alt="" height="45" src="L0RIG_deblur/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+    <a href="PAMI_text_deblurring_suppl.pdf">Results (including recovered latent images and blur kernels)</a>&nbsp; &nbsp; &nbsp;
+    <p>
+        &nbsp;
+        <font color="#ff0000" size="4">&nbsp; &nbsp; &nbsp; &nbsp; The followings are some visual comparison results with state-of-the-arts. For the estimated blur kernels, please click the above link to view the PDF file.</font>
+    </p>
+    <p class="style1">&nbsp;</p>
+    <p class="style1"><strong>Visualization Results from the Proposed Text Image Dataset</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/im03_ker01_blur.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/im03_ker01_blur.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im03_ker01out_cho.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/im03_ker01out_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im03_ker01out_xu.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/im03_ker01out_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/krishnan_im3_ker1_out.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/krishnan_im3_ker1_out.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image (PSNR: 14.74)</td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 (PSNR: 21.63)</td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010 (PSNR: 18.65)</td>
+                <td class="style1" style="height: 22px">Krishnan et al. CVPR 2011 (PSNR: 14.95)</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/diagfe_filt_sps_im3_ker1_out.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/diagfe_filt_sps_im3_ker1_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im3_ker1_out_xul0.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/im3_ker1_out_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im03_ker01_out.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/im03_ker01_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im03_ker01_out_improve.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/im03_ker01_out_improve.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Levin et al. CVPR 2011 (PSNR: 17.67)</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013 (PSNR: 17.46)</td>
+                <td class="style1" style="height: 22px">L0RIG (PSNR: 18.95)</td>
+                <td class="style1" style="height: 22px">IL0RIG (PSNR: <b>20.75</b>)</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/im10_ker04_blur.png"><img alt="" width="400" src="L0RIG_deblur/im10_ker04_blur.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im10_ker01out_cho.png"><img alt="" width="400" src="L0RIG_deblur/im10_ker04out_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im10_ker04out_xu.png"><img alt="" width="400" src="L0RIG_deblur/im10_ker04out_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/krishnan_im10_ker4_out.png"><img alt="" width="400" src="L0RIG_deblur/krishnan_im10_ker4_out.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image (PSNR: 13.92)</td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 (PSNR: 14.57)</td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010 (PSNR: 14.79)</td>
+                <td class="style1" style="height: 22px">Krishnan et al. CVPR 2011 (PSNR: 15.45)</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/diagfe_filt_sps_im10_ker4_out.png"><img alt="" width="400" src="L0RIG_deblur/diagfe_filt_sps_im10_ker4_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im10_ker4_out_xul0.png"><img alt="" width="400" src="L0RIG_deblur/im10_ker4_out_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im10_ker04_out.png"><img alt="" width="400" src="L0RIG_deblur/im10_ker04_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im10_ker04_out_improve.png"><img alt="" width="400" src="L0RIG_deblur/im10_ker04_out_improve.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Levin et al. CVPR 2011 (PSNR: 24.76)</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013 (PSNR: 27.10)</td>
+                <td class="style1" style="height: 22px">L0RIG (PSNR: 30.62)</td>
+                <td class="style1" style="height: 22px">IL0RIG (PSNR: <b>31.95</b>)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+    <p class="style1"><strong>Visualization Results from the Proposed Low-Illumination Image Dataset</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img1_6_blur.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/saturated_img1_6_blur.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img1_6_out_cho.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/saturated_img1_6_out_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img1_6_out_xu.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/saturated_img1_6_out_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img1_6_out_krishnan.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/saturated_img1_6_out_krishnan.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image (PSNR: 23.57)</td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 (PSNR: 23.88)</td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010 (PSNR: 24.17)</td>
+                <td class="style1" style="height: 22px">Krishnan et al. CVPR 2011 (PSNR: 23.90)</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img1_6_out_xul0.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/saturated_img1_6_out_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img1_6_out_zhe.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/saturated_img1_6_out_zhe.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img1_6_out.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/saturated_img1_6_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img1_6_out_improve.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/saturated_img1_6_out_improve.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Xu et al. CVPR 2013 (PSNR: 24.07)</td>
+                <td class="style1" style="height: 22px;">Hu et al. CVPR 2014 (PSNR: 22.62)</td>
+                <td class="style1" style="height: 22px">L0RIG (PSNR: 25.95)</td>
+                <td class="style1" style="height: 22px">IL0RIG (PSNR: <b>26.53</b>)</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img6_5_blur.png"><img alt="" width="400" src="L0RIG_deblur/saturated_img6_5_blur.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img6_5_out_cho.png"><img alt="" width="400" src="L0RIG_deblur/saturated_img6_5_out_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img6_5_out_xu.png"><img alt="" width="400" src="L0RIG_deblur/saturated_img6_5_out_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img6_5_out_krishnan.png"><img alt="" width="400" src="L0RIG_deblur/saturated_img6_5_out_krishnan.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image (PSNR: 22.68)</td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 (PSNR: 23.24)</td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010 (PSNR: 23.43)</td>
+                <td class="style1" style="height: 22px">Krishnan et al. CVPR 2011 (PSNR: 23.72)</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img6_5_out_xul0.png"><img alt="" width="400" src="L0RIG_deblur/saturated_img6_5_out_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img6_5_out_zhe.png"><img alt="" width="400" src="L0RIG_deblur/saturated_img6_5_out_zhe.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img6_8_out.png"><img alt="" width="400" src="L0RIG_deblur/saturated_img6_5_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/saturated_img6_5_out_improve.png"><img alt="" width="400" src="L0RIG_deblur/saturated_img6_5_out_improve.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Xu et al. CVPR 2013 (PSNR: 23.26)</td>
+                <td class="style1" style="height: 22px;">Hu et al. CVPR 2014 (PSNR: 21.48)</td>
+                <td class="style1" style="height: 22px">L0RIG (PSNR: 24.75)</td>
+                <td class="style1" style="height: 22px">IL0RIG (PSNR: <b>25.26</b>)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+    <p class="style1"><strong>Visualization Results from the Dataset of Levin et al. CVPR 2009</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/im04_ker07_blur.png"><img alt="" width="400" src="L0RIG_deblur/im04_ker07_blur.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im04_ker07_blurOut_shan.png"><img alt="" width="400" src="L0RIG_deblur/im04_ker07_blurOut_shan.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im04_ker07_out_cho.png"><img alt="" width="400" src="L0RIG_deblur/im04_ker07_out_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im04_ker07_blur_out_xu.png"><img alt="" width="400" src="L0RIG_deblur/im04_ker07_blur_out_xu.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Shan et al. Siggraph 2008 </td>
+                <td class="style1" style="height: 22px">Cho and Lee Siggraph Asia 2009 </td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010 </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/im04_ker07_blur_levin_result.png"><img alt="" width="400" src="L0RIG_deblur/im04_ker07_blur_levin_result.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im04_ker07_out_xul0.png"><img alt="" width="400" src="L0RIG_deblur/im04_ker07_out_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im04_ker07_out.png"><img alt="" width="400" src="L0RIG_deblur/im04_ker07_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/im04_ker07_out_improve.png"><img alt="" width="400" src="L0RIG_deblur/im04_ker07_out_improve.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Levin et al. CVPR 2011</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">L0RIG</td>
+                <td class="style1" style="height: 22px">IL0RIG</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+    <p class="style1"><strong>Visualization Results from the Dataset of Köhler et al. ECCV 2012</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Blurry1_9.png"><img alt="" width="400" src="L0RIG_deblur/Blurry1_9.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry1_9_cho.png"><img alt="" width="400" src="L0RIG_deblur/Blurry1_9_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry1_9_out_xu.png"><img alt="" width="400" src="L0RIG_deblur/Blurry1_9_out_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry1_9_krishnan.png"><img alt="" width="400" src="L0RIG_deblur/Blurry1_9_krishnan.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009</td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px">Krishnan et al. CVPR 2011</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Blurry1_9_hirsch.png"><img alt="" width="400" src="L0RIG_deblur/Blurry1_9_hirsch.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry1_9_result_whyte.png"><img alt="" width="400" src="L0RIG_deblur/Blurry1_9_result_whyte.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry1_9_out.png"><img alt="" width="400" src="L0RIG_deblur/Blurry1_9_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry1_9_out_improve.png"><img alt="" width="400" src="L0RIG_deblur/Blurry1_9_out_improve.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Hirsch et al. ICCV 2011 </td>
+                <td class="style1" style="height: 22px;">Whyte et al. IJCV 2012 </td>
+                <td class="style1" style="height: 22px">L0RIG </td>
+                <td class="style1" style="height: 22px">IL0RIG</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Blurry2_10.png"><img alt="" width="400" src="L0RIG_deblur/Blurry2_10.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry2_10_cho.png"><img alt="" width="400" src="L0RIG_deblur/Blurry2_10_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry2_10_out_xu.png"><img alt="" width="400" src="L0RIG_deblur/Blurry2_10_out_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry2_10_krishnan.png"><img alt="" width="400" src="L0RIG_deblur/Blurry2_10_krishnan.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009</td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px">Krishnan et al. CVPR 2011</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Blurry2_10_hirsch.png"><img alt="" width="400" src="L0RIG_deblur/Blurry2_10_hirsch.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry2_10_result_whyte.png"><img alt="" width="400" src="L0RIG_deblur/Blurry2_10_result_whyte.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry2_10_out.png"><img alt="" width="400" src="L0RIG_deblur/Blurry2_10_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry2_10_out_improve.png"><img alt="" width="400" src="L0RIG_deblur/Blurry2_10_out_improve.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Hirsch et al. ICCV 2011 </td>
+                <td class="style1" style="height: 22px;">Whyte et al. IJCV 2012 </td>
+                <td class="style1" style="height: 22px">L0RIG </td>
+                <td class="style1" style="height: 22px">IL0RIG</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Blurry3_8.png"><img alt="" width="400" src="L0RIG_deblur/Blurry3_8.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry3_8_cho.png"><img alt="" width="400" src="L0RIG_deblur/Blurry3_8_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry3_8_out_xu.png"><img alt="" width="400" src="L0RIG_deblur/Blurry3_8_out_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry3_8_krishnan.png"><img alt="" width="400" src="L0RIG_deblur/Blurry3_8_krishnan.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009</td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px">Krishnan et al. CVPR 2011</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Blurry3_8_hirsch.png"><img alt="" width="400" src="L0RIG_deblur/Blurry3_8_hirsch.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry3_8_result_whyte.png"><img alt="" width="400" src="L0RIG_deblur/Blurry3_8_result_whyte.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry3_8_out.png"><img alt="" width="400" src="L0RIG_deblur/Blurry3_8_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry3_8_out_improve.png"><img alt="" width="400" src="L0RIG_deblur/Blurry3_8_out_improve.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Hirsch et al. ICCV 2011 </td>
+                <td class="style1" style="height: 22px;">Whyte et al. IJCV 2012 </td>
+                <td class="style1" style="height: 22px">L0RIG </td>
+                <td class="style1" style="height: 22px">IL0RIG</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Blurry4_8.png"><img alt="" width="400" src="L0RIG_deblur/Blurry4_8.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry4_8_cho.png"><img alt="" width="400" src="L0RIG_deblur/Blurry4_8_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry4_8_out_xu.png"><img alt="" width="400" src="L0RIG_deblur/Blurry4_8_out_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry4_8_krishnan.png"><img alt="" width="400" src="L0RIG_deblur/Blurry4_8_krishnan.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009</td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px">Krishnan et al. CVPR 2011</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Blurry4_8_hirsch.png"><img alt="" width="400" src="L0RIG_deblur/Blurry4_8_hirsch.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry1_9_result_whyte.png"><img alt="" width="400" src="L0RIG_deblur/Blurry4_8_result_whyte.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry4_8_out.png"><img alt="" width="400" src="L0RIG_deblur/Blurry4_8_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Blurry4_8_out_improve.png"><img alt="" width="400" src="L0RIG_deblur/Blurry4_8_out_improve.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Hirsch et al. ICCV 2011 </td>
+                <td class="style1" style="height: 22px;">Whyte et al. IJCV 2012 </td>
+                <td class="style1" style="height: 22px">L0RIG </td>
+                <td class="style1" style="height: 22px">IL0RIG</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+
+    <p style="text-align:center"><strong><span><font size="4">Other Synthetic Images</font></span></strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/2013622235456945_blur_79.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/2013622235456945_blur_79.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/2013622235456945_blur_79_cho.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/2013622235456945_blur_79_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/2013622235456945_blur_79_xul0.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/2013622235456945_blur_79_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/2013622235456945_blur_79_result.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/2013622235456945_blur_79_result.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 </td>
+                <td class="style1" style="height: 22px">Xu et al. CVPR 2013 </td>
+                <td class="style1" style="height: 22px">IL0RIG</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/blurred_cho.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/blurred_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/blurred_cho_cho.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/blurred_cho_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/blurred_cholevin_out.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/blurred_cholevin_out.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/blurred_cho_result.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="L0RIG_deblur/blurred_cho_result.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px"><a href="http://cg.postech.ac.kr/research/text_deblur/">Blurred image</a> </td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 </td>
+                <td class="style1" style="height: 22px">Levin et al. CVPR 2011 </td>
+                <td class="style1" style="height: 22px">IL0RIG</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <br>
+    <br>
+
+    <p style="text-align:center"><strong><span><font size="4">Real Captured Images</font></span></strong></p>
+
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/8_patch_use.png"><img width="400" src="L0RIG_deblur/8_patch_use.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/8_patch_use_cho.png"><img width="400" src="L0RIG_deblur/8_patch_use_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/8_patch_use_cho_eccv12.png"><img width="400" src="L0RIG_deblur/8_patch_use_cho_eccv12.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/8_patch_use_our.png"><img width="400" src="L0RIG_deblur/8_patch_use_our.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px">Cho and Lee Siggraph Asia 2009</td>
+                <td class="style1" style="height: 22px;">Cho et al. ECCV 2012</td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/7_patch_use.png"><img alt="" width="400" src="L0RIG_deblur/7_patch_use.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/7_patch_use_xu.png"><img alt="" width="400" src="L0RIG_deblur/7_patch_use_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/7_patch_use_cho_eccv12.png"><img alt="" width="400" src="L0RIG_deblur/7_patch_use_cho_eccv12.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/7_patch_use_out.png"><img alt="" width="400" src="L0RIG_deblur/7_patch_use_out.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px;">Cho et al. ECCV 2012 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/1_patch_use.bmp"><img alt="" width="400" src="L0RIG_deblur/1_patch_use.bmp"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/1_patch_use_chen.png"><img alt="" width="400" src="L0RIG_deblur/1_patch_use_chen.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/1_patch_use_cho_eccv12.bmp"><img alt="" width="400" src="L0RIG_deblur/1_patch_use_cho_eccv12.bmp"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/1_patch_use_our.png"><img alt="" width="400" src="L0RIG_deblur/1_patch_use_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px">Chen et al. CVPR 2011 </td>
+                <td class="style1" style="height: 22px;">Cho et al. ECCV 2012 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/DSC0065_small.png"><img alt="" width="400" src="L0RIG_deblur/DSC0065_small.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/DSC0065_small_xul0.png"><img alt="" width="400" src="L0RIG_deblur/DSC0065_small_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/DSC0065_small_zhe.png"><img alt="" width="400" src="L0RIG_deblur/DSC0065_small_zhe.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/DSC0065_small_out.png"><img alt="" width="400" src="L0RIG_deblur/DSC0065_small_out.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px;">Hu et al. CVPR 2014</td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/IMG_0141_small.jpg"><img alt="" width="400" src="L0RIG_deblur/IMG_0141_small.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/IMG_0141_small_xul0.png"><img alt="" width="400" src="L0RIG_deblur/IMG_0141_small_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/IMG_0141_small_zhe.png"><img alt="" width="400" src="L0RIG_deblur/IMG_0141_small_zhe.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/IMG_0141_small_out.png"><img alt="" width="400" src="L0RIG_deblur/IMG_0141_small_out.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px;">Hu et al. CVPR 2014</td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/summerhouse.jpg"><img alt="" width="400" src="L0RIG_deblur/summerhouse.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/summerhouse_cho.png"><img alt="" width="400" src="L0RIG_deblur/summerhouse_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/summerhouse_out_xu.png"><img alt="" width="400" src="L0RIG_deblur/summerhouse_out_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/summerhouse_our.png"><img alt="" width="400" src="L0RIG_deblur/summerhouse_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 </td>
+                <td class="style1" style="height: 22px;">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/2010-12-22_16-43-14_520.png"><img alt="" width="400" src="L0RIG_deblur/2010-12-22_16-43-14_520.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/2010-12-22_16-43-14_520_out_wang.jpg"><img alt="" width="400" src="L0RIG_deblur/2010-12-22_16-43-14_520_out_wang.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/2010-12-22_16-43-14_520_xu.png"><img alt="" width="400" src="L0RIG_deblur/2010-12-22_16-43-14_520_xu.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/2010-12-22_16-43-14_520_result.png"><img alt="" width="400" src="L0RIG_deblur/2010-12-22_16-43-14_520_result.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Result from <a href="http://juew.org/deblurFamousPhoto2.html#girlwithdog"> DeblurFamousPhoto</a> </td>
+                <td class="style1" style="height: 22px;">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/boat_input.png"><img alt="" width="400" src="L0RIG_deblur/boat_input.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/boat_input_cho.png"><img alt="" width="400" src="L0RIG_deblur/boat_input_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/boat_input_xul0.png"><img alt="" width="400" src="L0RIG_deblur/boat_input_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/boat_input_our.png"><img alt="" width="400" src="L0RIG_deblur/boat_input_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 </td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/postcard.jpg"><img alt="" width="400" src="L0RIG_deblur/postcard.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/postcard_cho.png"><img alt="" width="400" src="L0RIG_deblur/postcard_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/postcard_deblur.jpg"><img alt="" width="400" src="L0RIG_deblur/postcard_deblur.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/postcard_our.png"><img alt="" width="400" src="L0RIG_deblur/postcard_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 </td>
+                <td class="style1" style="height: 22px;">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/roma.jpg"><img alt="" width="400" src="L0RIG_deblur/roma.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/roma_deblur.jpg"><img alt="" width="400" src="L0RIG_deblur/roma_deblur.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/roma_krishnan.png"><img alt="L0RIG_deblur/roma_krishnan.png" width="400" src="L0RIG_deblur/roma_krishnan.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/roma_our.png"><img alt="" width="400" src="L0RIG_deblur/roma_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px;">Krishnan et al. CVPR 2011</td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/flower.jpg"><img alt="" width="400" src="L0RIG_deblur/flower.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/flower_cho.png"><img alt="" width="400" src="L0RIG_deblur/flower_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/flower_deblur.jpg"><img alt="" width="400" src="L0RIG_deblur/flower_deblur.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/flower_our.png"><img alt="" width="400" src="L0RIG_deblur/flower_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 </td>
+                <td class="style1" style="height: 22px;">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/boat.jpg"><img alt="" width="400" src="L0RIG_deblur/boat.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/boat_cho.png"><img alt="" width="400" src="L0RIG_deblur/boat_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/boat_deblur.jpg"><img alt="" width="400" src="L0RIG_deblur/boat_deblur.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/boat_our.png"><img alt="" width="400" src="L0RIG_deblur/boat_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 </td>
+                <td class="style1" style="height: 22px;">Xu and Jia ECCV 2010 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/4_input.jpg"><img alt="" width="400" src="L0RIG_deblur/4_input.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/4_input_cho.png"><img alt="" width="400" src="L0RIG_deblur/4_input_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/4_input_zhong.jpg"><img alt="" width="400" src="L0RIG_deblur/4_input_zhong.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/4_input_result.png"><img alt="" width="400" src="L0RIG_deblur/4_input_result.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 </td>
+                <td class="style1" style="height: 22px;">Zhong et al. CVPR 2013 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/32_input.jpg"><img alt="" width="400" src="L0RIG_deblur/32_input.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/32_input_cho.png"><img alt="" width="400" src="L0RIG_deblur/32_input_cho.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/32_output_zhong.jpg"><img alt="" width="400" src="L0RIG_deblur/32_output_zhong.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/32_input_result.png"><img alt="" width="400" src="L0RIG_deblur/32_input_result.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Cho and Lee Siggraph Asia 2009 </td>
+                <td class="style1" style="height: 22px;">Zhong et al. CVPR 2013 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/real_img2.png"><img alt="" width="400" src="L0RIG_deblur/real_img2.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/real_img2_xul0.png"><img alt="" width="400" src="L0RIG_deblur/real_img2_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/real_img2_pan_eccv14.png"><img alt="" width="400" src="L0RIG_deblur/real_img2_pan_eccv14.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/real_img2_out.png"><img alt="" width="400" src="L0RIG_deblur/real_img2_out.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013 </td>
+                <td class="style1" style="height: 22px;">Pan et al. ECCV 2014 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Book.jpg"><img alt="" width="400" src="L0RIG_deblur/Book.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Book_Gupta.png"><img alt="" width="400" src="L0RIG_deblur/Book_Gupta.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Book_xul0.png"><img alt="" width="400" src="L0RIG_deblur/Book_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Book_out.png"><img alt="" width="400" src="L0RIG_deblur/Book_out.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px">Gupta et al. ECCV 2010</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/blurred_gupta.jpg"><img alt="" width="400" src="L0RIG_deblur/blurred_gupta.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/blurred_gupta_deblurred.png"><img alt="" width="400" src="L0RIG_deblur/blurred_gupta_deblurred.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/blurred_gupta_xul0.png"><img alt="" width="400" src="L0RIG_deblur/blurred_gupta_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/blurred_gupta_our.png"><img alt="" width="400" src="L0RIG_deblur/blurred_gupta_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Gupta et al. ECCV 2010 </td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Pantheon.jpg"><img alt="" width="400" src="L0RIG_deblur/Pantheon.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Pantheon_Whyte.jpg"><img alt="" width="400" src="L0RIG_deblur/Pantheon_Whyte.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Pantheon_xul0.png"><img alt="" width="400" src="L0RIG_deblur/Pantheon_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Pantheon_our.png"><img alt="" width="400" src="L0RIG_deblur/Pantheon_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Whyte et al. CVPR 2010 </td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/butchershop.jpg"><img alt="" width="400" src="L0RIG_deblur/butchershop.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Butcher_Shop_Hirsch.png"><img alt="" width="400" src="L0RIG_deblur/Butcher_Shop_Hirsch.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Butcher_Shop_xul0.png"><img alt="" width="400" src="L0RIG_deblur/Butcher_Shop_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Butcher_Shop_out.png"><img alt="" width="400" src="L0RIG_deblur/Butcher_Shop_out.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px">Hirsch et al. ICCV 2011</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/Vintage_Car.jpg"><img alt="" width="400" src="L0RIG_deblur/Vintage_Car.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Vintage_Car_Hirsch.jpg"><img alt="" width="400" src="L0RIG_deblur/Vintage_Car_Hirsch.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Vintage_Car_xul0.png"><img alt="" width="400" src="L0RIG_deblur/Vintage_Car_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/Vintage_Car_our.png"><img alt="" width="400" src="L0RIG_deblur/Vintage_Car_our.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image</td>
+                <td class="style1" style="height: 22px">Hirsch et al. ICCV 2011</td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013</td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="L0RIG_deblur/book_whyte.jpg"><img alt="" width="400" src="L0RIG_deblur/book_whyte.jpg"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/book_whyte_deblurred_krishnan.png"><img alt="" width="400" src="L0RIG_deblur/book_whyte_deblurred_krishnan.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/book_whyte_xul0.png"><img alt="" width="400" src="L0RIG_deblur/book_whyte_xul0.png"></a>
+                </td>
+                <td>
+                    <a href="L0RIG_deblur/book_whyte_our.png"><img alt="" width="400" src="L0RIG_deblur/book_whyte_our.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">Blurred image </td>
+                <td class="style1" style="height: 22px;">Whyte et al. IJCV 2012 </td>
+                <td class="style1" style="height: 22px;">Xu et al. CVPR 2013 </td>
+                <td class="style1" style="height: 22px">IL0RIG </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+    <hr>
+
+    <br>
+    <p><strong><font size="4">Technical Papers, Codes, and Datasets</font></strong></p>
+    <table align="center">
+        <tbody align="center">
+            Jinshan Pan, Zhe Hu, Zhixun Su, and Ming-Hsuan Yang, "Deblurring Text Images via
+            <em>L</em>
+            <sub>0</sub>-Regularized Intensity and Gradient Prior", IEEE Conference on Computer Vision and Pattern Recognition (
+            <b><i>CVPR</i></b>), 2014
+            <br>
+            <br>
+            <img alt="" height="45" src="L0RIG_deblur/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="https://eng.ucmerced.edu/people/zhu/CVPR14_deblurtext.pdf">Paper</a>&nbsp; &nbsp; &nbsp;&nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="L0RIG_deblur/matlab.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="https://eng.ucmerced.edu/people/zhu/CVPR14_text_code_blind.zip">MATLAB code</a>&nbsp;&nbsp;&nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="L0RIG_deblur/database_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="https://pan.baidu.com/s/1O2AezDHc64GzHyU_U7BX4g">Datasets</a>&nbsp;
+            <br>
+            <br>
+            Jinshan Pan, Zhe Hu, Zhixun Su, and Ming-Hsuan Yang, "
+            <em>L</em>
+            <sub>0</sub>-Regularized Intensity and Gradient Prior for Deblurring Text Images and Beyond", IEEE Transactions on Pattern Analysis and Machine Intelligence (
+            <b><i>TPAMI</i></b>), 2016
+            <br>
+            <br>
+            <img alt="" height="45" src="L0RIG_deblur/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="tpami17_text_deblurring.pdf">Paper</a>&nbsp; &nbsp; &nbsp; &nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="L0RIG_deblur/matlab.png" width="45">
+            &nbsp;
+            <a href="https://eng.ucmerced.edu/people/zhu/CVPR14_text_code_blind.zip">MATLAB code</a>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="L0RIG_deblur/database_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="https://pan.baidu.com/s/1O2AezDHc64GzHyU_U7BX4g">Datasets</a>&nbsp;
+
+            </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <br>
+    <p><strong><font size="4">References</font></strong></p>
+
+    <p>[1] R. Fergus, B. Singh, A. Hertzmann, S.T. Roweis, and W.T. Freeman. “Removing camera shake from a single photograph”, SIGGRAPH 2006.</p>
+
+    <p>[2] Q. Shan, J. Jia, and A. Agarwala. “High-quality motion deblurring from a single image”, SIGGRAPH 2008.</p>
+
+    <p>[3] H. Cho, J. Wang, and S. Lee. “Text image deblurring using text-specific properties,” ECCV 2012.</p>
+
+    <p>[4] S. Cho and S. Lee. “Fast motion deblurring”, SIGGRAPH ASIA 2009.</p>
+
+    <p>[5] L. Xu and J. Jia. “Two-phase kernel estimation for robust motion deblurring”, ECCV 2010.</p>
+
+    <p>[6] L. Xu, S. Zheng, and J. Jia. “Unnatural <em>L</em><sub>0</sub> sparse representation for natural image deblurring”, CVPR 2013.</p>
+
+    <p>[7] A. Levin, Y. Weiss, F. Durand, and W. T. Freeman, “Understanding and evaluating blind deconvolution algorithms,” CVPR 2009.</p>
+
+    <p>[8] D. Krishnan, T. Tay and R. Fergus.&nbsp;“Blind deconvolution using a normalized sparsity measure”, CVPR 2011.</p>
+
+    <p>[9] R. Kohler, M. Hirsch, B. Mohler and B. Scholkopf. “Recording and playback of camera shake:&nbsp;benchmarking blind deconvolution with a real-world database”, ECCV 2012.</p>
+
+    <p>[10] O. Whyte, J. Sivic, A. Zisserman, and J. Ponce. “Non-uniform deblurring for shaken images”, CVPR 2010.</p>
+
+    <p>[11] A. Gupta, N. Joshi, L. Zitnick, M. Cohen, and B. Curless. “Single image deblurring using motion density functions”, ECCV 2010.</p>
+
+    <p>[12] A. Levin, Y. Weiss, F. Durand, and W. T. Freeman. "Efficient marginal likelihood optimization in blind deconvolution", CVPR 2011. </p>
+
+    <p>[13] D. Krishnan, T. Tay, and R. Fergus.&nbsp;“Blind deconvolution using a normalized sparsity measure”, CVPR 2011.</p>
+
+    <p>[14] M. Hirsch,&nbsp;C. Schuler, S. Harmeling, and B. Scholkopf. “Fast removal of non-uniform camera shake”,&nbsp;ICCV 2011.</p>
+
+    <p>[15] Z. Hu,&nbsp;S. Cho, J. Wang, and M.-H. Yang. “Deblurring low-light images with light streaks”, CVPR 2014.</p>
+
+    <p>[16] O. Whyte, J. Sivic, A. Zisserman, and J. Ponce. “Non-uniform deblurring for shaken images”, IJCV 2012.</p>
+
+    <p>[17] X. Chen, X. He, J. Yang, and Q. Wu. “An effective document image deblurring algorithm”, CVPR 2011.</p>
+
+    <p>[18] J. Pan, Z. Hu, Z. Su, and M.-H. Yang. “Deblurring face images with exemplars”, ECCV 2014.</p>
+    <br>
+    <br>
+    <div id="sbi_camera_button" class="sbi_search" style="left: 0px; top: 0px; position: absolute; width: 29px; height: 27px; border: none; margin: 0px; padding: 0px; z-index: 2147483647; display: none;"></div>
+</body>
+</html>
