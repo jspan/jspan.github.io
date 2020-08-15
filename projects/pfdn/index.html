@@ -1,0 +1,478 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Physics-based Feature Dehazing Networks</title>
+    <style type="text/css">
+        body {
+            font: 100% Verdana, Arial, sans-serif;
+        }
+
+        a, a:link, a:visited {
+            color: #1f82a9;
+            background: transparent text-decoration: underline;
+            cursor: pointer;
+            background-color: underline;
+        }
+
+        .style1 {
+            text-align: center;
+        }
+
+        .style2 {
+            text-align: left;
+        }
+
+        .style3 {
+            font-size: large;
+            color: #0000FF;
+        }
+
+        .style5 {
+            text-align: left;
+            font-size: large;
+            color: #0000FF;
+        }
+
+        .style7 {
+            text-align: center;
+            font-size: large;
+        }
+
+        .style8 {
+            text-align: center;
+            font-size: large;
+            color: #FF0000;
+        }
+
+        .style9 {
+            color: #FF0000;
+        }
+
+        .style10 {
+            font-size: large;
+        }
+
+        .style12 {
+            font-size: x-large;
+            text-align: center;
+            background-color: #C0C0C0;
+        }
+
+        .style13 {
+            font-size: 16pt;
+            color: #0000FF;
+        }
+
+        .auto-style1 {
+            text-align: center;
+            font-size: medium;
+        }
+
+        .auto-style2 {
+            font-family: Verdana;
+        }
+
+        .auto-style3 {
+            color: #1F82A9;
+        }
+    </style>
+</head>
+<body>
+
+    <br>
+    <h1 style="text-align:center">
+        Physics-based Feature Dehazing Networks
+    </h1>
+
+    <br>
+    <p style="text-align:center">
+        <font color="#000000" size="3">
+            Jiangxin Dong&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://jspan.github.io/">Jinshan Pan</a></a>
+        </font>
+    </p>
+
+
+    <p><strong><span><font size="4">Abstract</font></span></strong></p>
+
+    <p>
+        We propose a physics-based feature dehazing network for image dehazing.
+        In contrast to most existing end-to-end trainable network-based dehazing methods, we explicitly consider the physics model of the haze process in the network design and remove haze in a deep feature space.
+        We propose an effective feature dehazing unit (FDU), which is applied to the deep feature space to explore useful features for image dehazing based on the physics model.
+        The FDU is embedded into an encoder and decoder architecture with residual learning, so that the proposed network can be trained in an end-to-end fashion and effectively help haze removal.
+        The encoder and decoder modules are adopted for feature extraction and clear image reconstruction, respectively.
+        The residual learning is applied to increase the accuracy and ease the training of deep neural networks.
+        We analyze the effectiveness of the proposed network and demonstrate that it can effectively dehaze images with favorable performance against state-of-the-art methods.
+    </p>
+
+    <br>
+    <br>
+    <hr>
+
+    <p><strong><font size="4">Network Architecture</font></strong></p>
+
+    <table align="center">
+
+        <tbody align="center">
+            <tr>
+
+                <td style="text-align:center">
+                    <a href="PFDN/flow_chart_PFDN.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="PFDN/flow_chart_PFDN.png" width="1000"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <p />
+                <p />
+                <br>
+                <td style="text-align:left">
+                    <font size="4">
+                        Proposed network architecture for image dehazing. The whole image dehazing network PFDN in (c) is based on an encoder and decoder architecture with the proposed PFDBs in (a).
+                        The proposed PFDB consists of an FDU with a residual learning architecture, where the proposed FDU can make full use of the physics model in the feature space for better image dehazing.
+                        Please see our paper for more details.
+                    </font>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <table align="center">
+
+        <tbody align="center">
+            <tr>
+
+                <td style="text-align:center">
+                    <a href="PFDN/FDU.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="PFDN/FDU.png" width="800"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <p />
+                <p />
+                <br>
+                <td style="text-align:left">
+                    <font size="4">
+                        Network architecture of the proposed feature dehazing unit (FDU, i.e., Figure 1(b) in the paper).
+                    </font>
+                </td>
+            </tr>
+            <tr>
+        </tbody>
+    </table>
+
+    <table align="center">
+
+        <tbody align="center">
+
+        <td style="text-align:center">
+            <a href="PFDN/PFDB.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="PFDN/PFDB.png" width="600"></a>
+        </td>
+        </tr>
+
+        <tr>
+            <p />
+            <p />
+            <br>
+            <td style="text-align:center">
+                <font size="4">
+                    Network architecture of the proposed physics-based feature dehazing block (PFDB, i.e., Figure 1(a) in the paper).
+                </font>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table align="center">
+
+        <tbody align="center">
+
+            <tr>
+
+                <td style="text-align:center">
+                    <a href="PFDN/PFDN.png"><img alt="" style="max-width:99%;  border:1px solid black;" src="PFDN/PFDN.png" width="1300"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <p />
+                <p />
+                <br>
+                <td style="text-align:center">
+                    <font size="4">
+                        Network architecture of the proposed physics-based feature dehazing network (PFDN, i.e., Figure 1(c) in the paper).
+                    </font>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+    <p><strong><font size="4">Visual Comparisons</font></strong></p>
+    <p class="style1">&nbsp;</p>
+    <p class="style1"><strong>Synthetic Examples</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="PFDN/129_hazy.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/129_hazy.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/129_mscnn1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/129_mscnn1.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/129_dehazenet1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/129_dehazenet1.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Hazy image </td>
+                <td class="style1" style="height: 22px;">MSCNN </td>
+                <td class="style1" style="height: 22px">DehazeNet </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="PFDN/129_gfn.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/129_gfn.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/129_dcpdn1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/129_dcpdn1.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/129_bcnn.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/129_bcnn.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">GFN </td>
+                <td class="style1" style="height: 22px;">DCPDN </td>
+                <td class="style1" style="height: 22px">DualCNN</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="PFDN/129_epdn.png"><img alt="" width="400" src="PFDN/129_epdn.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/129_GDN.png"><img alt="" width="400" src="PFDN/129_GDN.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/129_ours.png"><img alt="" width="400" src="PFDN/129_ours.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">EPDN </td>
+                <td class="style1" style="height: 22px;">GDN</td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="PFDN/0118_hazy.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/0118_hazy.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/0118_mscnn.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/0118_mscnn.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/0118_dehazenet.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/0118_dehazenet.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Hazy image </td>
+                <td class="style1" style="height: 22px;">MSCNN </td>
+                <td class="style1" style="height: 22px">DehazeNet </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="PFDN/0118_aodnet.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/0118_aodnet.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/0118_dcpdn.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/0118_dcpdn.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/0118_bcnn.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="400" src="PFDN/0118_bcnn.png"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="style1" style="height: 22px">GFN </td>
+                <td class="style1" style="height: 22px;">DCPDN </td>
+                <td class="style1" style="height: 22px">DualCNN</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="PFDN/0118_epdn.png"><img alt="" width="400" src="PFDN/0118_epdn.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/0118_GDN.png"><img alt="" width="400" src="PFDN/0118_GDN.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/0118_ours.png"><img alt="" width="400" src="PFDN/0118_ours.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">EPDN </td>
+                <td class="style1" style="height: 22px;">GDN</td>
+                <td class="style1" style="height: 22px">Ours</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+
+
+    <br><br>
+    <p class="style1"><strong>Real Examples</strong></p>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="PFDN/PipingLive_input.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/PipingLive_input.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/PipingLive_gfn.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/PipingLive_gfn.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/PipingLive_cgan.jpg"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/PipingLive_cgan.jpg"></a>
+                </td>
+                <td>
+                    <a href="PFDN/PipingLive_bcnn.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/PipingLive_bcnn.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/PipingLive_out.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/PipingLive_out.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Hazy image </td>
+                <td class="style1" style="height: 22px;">GFN </td>
+                <td class="style1" style="height: 22px">cGAN </td>
+                <td class="style1" style="height: 22px;">DualCNN </td>
+                <td class="style1" style="height: 22px">Ours </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="PFDN/hazyShade_hazy1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/hazyShade_hazy1.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/hazyShade_DCPDN1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/hazyShade_DCPDN1.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/hazyShade_EPDN1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/hazyShade_EPDN1.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/hazyShade_GDN1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/hazyShade_GDN1.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/hazyShade_ours1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/hazyShade_ours1.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Hazy image </td>
+                <td class="style1" style="height: 22px;">DCPDN </td>
+                <td class="style1" style="height: 22px">EPDN </td>
+                <td class="style1" style="height: 22px;">GDN </td>
+                <td class="style1" style="height: 22px">Ours </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="PFDN/buildings_hazy.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/buildings_hazy.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/buildings_bcnn1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/buildings_bcnn1.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/buildings_dcpdn1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/buildings_dcpdn1.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/buildings_GDN1.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/buildings_GDN1.png"></a>
+                </td>
+                <td>
+                    <a href="PFDN/buildings_ours.png"><img alt="" style="max-width:99%;  border:1px solid black;" width="300" src="PFDN/buildings_ours.png"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="style1" style="height: 22px">Hazy image </td>
+                <td class="style1" style="height: 22px;">DualCNN </td>
+                <td class="style1" style="height: 22px">DCPDN </td>
+                <td class="style1" style="height: 22px;">GDN </td>
+                <td class="style1" style="height: 22px">Ours </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+
+    <br>
+    <br>
+    <hr>
+    <p><strong><font size="4">Technical Papers, Codes, and Datasets</font></strong></p>
+    <table align="center">
+        <tbody align="center">
+            Jiangxin Dong and Jinshan Pan, "Physics-based Feature Dehazing Networks", European Conference on Computer Vision (<b><i>ECCV</i></b>), 2020.
+            <br>
+            <br>
+            <img alt="" height="45" src="PFDN/Adobe_PDF_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="">Paper coming soon...</a>&nbsp; &nbsp; &nbsp; &nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="PFDN/code.png" width="45">
+            &nbsp;
+            <a href="">Source code coming soon...</a>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
+            <br>
+            <img alt="" height="45" src="PFDN/database_icon.png" width="45">&nbsp;&nbsp;&nbsp;
+            <a href="">Datasets comming soon...</a>&nbsp;&nbsp;&nbsp;
+
+            </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <br>
+    <p><strong><font size="4">References</font></strong></p>
+
+    <p>[1] Berman, D., Treibitz, T., Avidan, S.: Non-local image dehazing. In: CVPR. pp. 1674–1682 (2016).</p>
+
+    <p>[2] Cai, B., Xu, X., Jia, K., Qing, C., Tao, D.: Dehazenet: An end-to-end system for single image haze removal. IEEE TIP 25(11), 5187–5198 (2016).</p>
+
+    <p>[3] He, K., Sun, J., Tang, X.: Single image haze removal using dark channel prior. IEEE TPAMI 33(12), 2341–2353 (2011).</p>
+
+    <p>[4] Li, B., Peng, X., Wang, Z., Xu, J., Feng, D.: Aod-net: All-in-one dehazing network. In: The IEEE International Conference on Computer Vision (ICCV) (2017).</p>
+
+    <p>[5] Li, B., Ren, W., Fu, D., Tao, D., Feng, D., Zeng, W., Wang, Z.: Benchmarking single-image dehazing and beyond. IEEE TIP 28(1), 492–505 (2019).</p>
+
+    <p>[6] Li, R., Pan, J., Li, Z., Tang, J.: Single image dehazing via conditional generative adversarial network. In: CVPR. pp. 8202–8211 (2018).</p>
+
+    <p>[7] Liu, X., Ma, Y., Shi, Z., Chen, J.: Griddehazenet: Attention-based multi-scale network for image dehazing. In: ICCV (2019).</p>
+
+    <p>[8] Pan, J., Liu, S., Sun, D., Zhang, J., Liu, Y., Ren, J.S.J., Li, Z., Tang, J., Lu, H., Tai, Y.W., Yang, M.H.: Learning dual convolutional neural networks for low-level vision. In: CVPR. pp. 3070–3079 (2018).</p>
+
+    <p>[9] Qu, Y., Chen, Y., Huang, J., Xie, Y.: Enhanced pix2pix dehazing network. In: CVPR (2019).</p>
+
+    <p>[10] Ren, W., Liu, S., Zhang, H., Pan, J., Cao, X., Yang, M.H.: Single image dehazing via multi-scale convolutional neural networks. In: ECCV. pp. 154–169 (2016).</p>
+
+    <p>[11] Ren, W., Ma, L., Zhang, J., Pan, J., Cao, X., Liu, W., Yang, M.H.: Gated fusion network for single image dehazing. In: CVPR. pp. 3253–3261 (2018).</p>
+
+    <p>[12] Zhang, H., Patel, V.M.: Densely connected pyramid dehazing network. In: CVPR. pp. 3194–3203 (2018). </p>
+
+
+    <br>
+    <br>
+    <div id="sbi_camera_button" class="sbi_search" style="left: 0px; top: 0px; position: absolute; width: 29px; height: 27px; border: none; margin: 0px; padding: 0px; z-index: 2147483647; display: none;"></div>
+</body>
+</html>
